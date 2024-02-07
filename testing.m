@@ -1,0 +1,3 @@
+clear
+
+dislay('Hola')
