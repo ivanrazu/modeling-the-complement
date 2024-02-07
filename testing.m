@@ -1,3 +1,3 @@
 clear
 
-dislay('Hola')
+disp('Hola')
