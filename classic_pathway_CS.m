@@ -23,6 +23,8 @@ function dydt = classic_pathway_CS(t, y, params)
     C5a = y(18);
     C6C7C8C9 = y(19);
     MAC = y(20);
+    AgAb = y(21);
+    
 
     % Defining model parameters
     K0 = params(1);
@@ -40,14 +42,15 @@ function dydt = classic_pathway_CS(t, y, params)
     K8 = params(13);
     K9 = params(14);
     K_9 = params(15);
-    AgAb = params(16);
 
-    FH=params(17);
-    C4bp=params(18);
-    DAF=params(19);
-    CR1=params(20);
-    CR2=params(21);
-    MCP=params(22);
+    FH=params(16);
+    C4bp=params(17);
+    DAF=params(18);
+    CR1=params(19);
+    CR2=params(20);
+    MCP=params(21);
+
+    KAgAb=params(22);
 
 
     % Differential Equations
@@ -90,8 +93,10 @@ function dydt = classic_pathway_CS(t, y, params)
     dC6C7C8C9_dt = -K9 * C4bC2aC3bC5b * C6C7C8C9 + K_9 * MAC;
     
     dMAC_dt = K9 * C4bC2aC3bC5b * C6C7C8C9 - K_9 * MAC;
+
+    dAgAb_dt = -KAgAb*AgAb;
     
     dydt = [dC1_dt, dC1bar_dt,dC4_dt,dC1barC4_dt,dC4a_dt,dC4b_dt,dC2_dt, ...
             dC4b2_dt,dC4bC2a_dt,dC2b_dt,dC3_dt,dC4bC2aC3_dt,dC4bC2aC3b_dt,...
-             dC3a_dt, dC5_dt, dC4bC2aC3bC5_dt,dC4bC2aC3bC5b_dt,C5a_dt,dC6C7C8C9_dt,dMAC_dt]';
+             dC3a_dt, dC5_dt, dC4bC2aC3bC5_dt,dC4bC2aC3bC5b_dt,C5a_dt,dC6C7C8C9_dt,dMAC_dt,dAgAb_dt]';
 

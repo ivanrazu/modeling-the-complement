@@ -1,7 +1,7 @@
 clear
 
 % Define parameters
-K0 = 0.5 * 10^(-2); % arbitrarily chosen to obtain biologically relevant trajectory
+K0 = 0.5 * 10^(1); % arbitrarily chosen to obtain biologically relevant trajectory
 
 % Parameters taken from Hirayama et al 1996
 K1 = 0.5 * 10^8;
@@ -22,7 +22,7 @@ K_9 = 0.3 * 10^(-6); % arbitrarily chosen to obtain biologically relevant trajec
 % 
 % AgAb = 2.5 * 10^7;   % arbitrarily chosen to obtain biologically relevant trajectory
 
-AgAb = 1 * 10^(-5);
+KAgAb = 1 * 10^(-2);
 
 FH=0;
 C4bp=0;
@@ -38,7 +38,7 @@ MCP=0;
 % K_9=K_9*5e10;
 
 
-params = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9, AgAb,FH,C4bp,DAF,CR1,CR2,MCP];
+params = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9,FH,C4bp,DAF,CR1,CR2,MCP,KAgAb];
 
 % Initial conditions
 C1_0 = 45 * 10^(-5);
@@ -62,12 +62,14 @@ C5a_0 = 0;
 C6789_0 = 2*10^(-4);  % arbitrarily chosen to obtain biologically relevant trajectory
 MAC_0 = 0;
 
+AgAb_0=1e2;
+
 initial_conditions = [C1_0, C1bar_0, C4_0, C1barC4_0, C4a_0, C4b_0, C2_0, ...
     C4b2_0, C4bC2a_0, C2b_0, C3_0, C4bC2aC3_0, C4bC2ac3b_0, ...
-    C3a_0, C5_0, C4bC2aC3bC5_0, C4bC2aC3bC5b_0, C5a_0, C6789_0, MAC_0]/1000;
+    C3a_0, C5_0, C4bC2aC3bC5_0, C4bC2aC3bC5b_0, C5a_0, C6789_0, MAC_0,AgAb_0]/1000;
 
 % Time span
-t_span = [0, 1];
+t_span = [0, 1.5];
 
 % Call solver
 sol = ode23s(@classic_pathway_CS, t_span, initial_conditions, [], params);
@@ -169,6 +171,16 @@ hold on
 plot(t_eval, sol_values(19, :), 'LineWidth', 2, 'DisplayName', 'C6C7C8C9');
 hold on
 plot(t_eval, sol_values(20, :), 'LineWidth', 2, 'DisplayName', 'MAC');
+xlabel('Time');
+ylabel('Population');
+legend('Location', 'Best');
+title('Classic Pathway Dynamics');
+grid on;
+hold off;
+
+%% 
+figure
+plot(t_eval, sol_values(21, :), 'LineWidth', 2, 'DisplayName', 'AgAb');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
