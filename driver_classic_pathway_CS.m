@@ -22,7 +22,7 @@ K_9 = 0.3 * 10^(-6); % arbitrarily chosen to obtain biologically relevant trajec
 % 
 % AgAb = 2.5 * 10^7;   % arbitrarily chosen to obtain biologically relevant trajectory
 
-KAgAb = 1 * 10^(-2);
+KAgAb = 1 * 10^(-7);
 
 FH=0;
 C4bp=0;

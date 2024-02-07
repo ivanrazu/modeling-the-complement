@@ -94,7 +94,7 @@ function dydt = classic_pathway_CS(t, y, params)
     
     dMAC_dt = K9 * C4bC2aC3bC5b * C6C7C8C9 - K_9 * MAC;
 
-    dAgAb_dt = -KAgAb*AgAb;
+    dAgAb_dt = -K0*AgAb*C1+KAgAb;
     
     dydt = [dC1_dt, dC1bar_dt,dC4_dt,dC1barC4_dt,dC4a_dt,dC4b_dt,dC2_dt, ...
             dC4b2_dt,dC4bC2a_dt,dC2b_dt,dC3_dt,dC4bC2aC3_dt,dC4bC2aC3b_dt,...
