@@ -21,7 +21,7 @@ K8 = 4.8 * 10^8;
 K9 = 8 * 10^(12); % arbitrarily chosen to obtain biologically relevant trajectory
 K_9 = 0.3 * 10^(-12); % arbitrarily chosen to obtain biologically relevant trajectory
 
-KAgAb = 1 * 10^(-7);   % arbitrarily chosen to obtain biologically relevant trajectory
+KAgAb = 0.5 * 10^(1);   % arbitrarily chosen to obtain biologically relevant trajectory
 
 
 FH=0;
@@ -32,8 +32,8 @@ CR2=0;
 MCP=0;
 
 par_str={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K_7', 'K8', 'K9', 'K_9'...
-    , 'AgAb','FH','C4bp','DAF','CR1','CR2','MCP','KAgAb'};
-%%
+    ,'FH','C4bp','DAF','CR1','CR2','MCP','KAgAb'};
+%%  Edit name_vec,name_vec_latex, a_vec, and b_vec accordingly
 
 % name_vec={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K_7', 'K8', 'K9', 'K_9'...
 %     , 'AgAb','FH','C4bp','DAF','CR1','CR2','MCP'};
@@ -41,37 +41,40 @@ par_str={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K
 %     , 'AgAb','FH','C4bp','DAF','CR1','CR2','MCP'};
 % a_vec = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9, AgAb,FH,C4bp,DAF,CR1,CR2,MCP].*0.5;
 % b_vec = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9, AgAb,FH,C4bp,DAF,CR1,CR2,MCP].*10;
-%
 
 % name_vec={'K0','K1','K_1','K2'};
 % name_vec_latex={'$K_0$','$K_1$','$K_{-1}$','$K_2$'};
-% 
 % a_vec = [K0*0.1,K1*0.1,K_1*0.001,K2*0.00001];
 % b_vec = [K0,K1*10,K_1*100,K2*10];
 
 
-name_vec={'K0'};
-name_vec_latex={'$K_0$'};
+% name_vec={'K0','K1','K_1'};
+% name_vec_latex={'$K_0$','$K_1$','$K_{-1}$'};
+% a_vec = [K0*0.1,K1*0.1,K_1*1e11];
+% b_vec = [K0*10,K1*10,K_1*5e11];
 
-a_vec = [K0*0.1];
-b_vec = [K0*10];
-
-% a_vec = [K9*1e-4,K_9*5e10];
-% b_vec = [K9*1e-2,K_9*1e12];
+name_vec={'KAgAb'};
+name_vec_latex={'$K_{AgAb}$'};
+a_vec = [KAgAb*0.0001];
+b_vec = [KAgAb*1];
 
 %%
 % Set =1 depending on which variable want to plot 
-plot_C1=0;
-plot_C1bar=0;
+plot_C1=1;
+plot_C1bar=1;
+plot_AgAb=1;
 
 plot_C4=1;
 plot_C1barC4=0;
 plot_C4a=0;
 plot_C4b=0;
-
-
 plot_C6C7C8C9=0;
 plot_MAC=0;
+
+
+np=10;
+rows=2;
+cols=2;
 %%
 
 
@@ -113,12 +116,6 @@ tspan = [0, 1];
 t_eval = linspace(tspan(1), tspan(2), 1000);
 
 %%
-
-np=6;
-
-rows=1;
-cols=1;
-
 
 for i=1:length(a_vec)
     a=a_vec(i);
@@ -178,6 +175,8 @@ hold on;
         C5a=Ys(:,18);
         C6C7C8C9=Ys(:,19);
         MAC=Ys(:,20);
+        AgAb=Ys(:,21);
+
 
 %%%%%%%%%%%%%%%%
 if plot_C1==1
@@ -190,12 +189,28 @@ if plot_C1==1
         set(gca,'linewidth',2)
         xlabel('Time');
         legend('C1')
+        ylim([0,5e-7])
+end        
+%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+if plot_AgAb==1
+        subplot(rows,cols,2)
+        hold on
+        set(gca,'Fontsize',30);box on;
+        plot(t_eval, AgAb', 'Color',colors(j,:), 'LineWidth', 2);
+        grid off
+        hold on
+        set(gca,'linewidth',2)
+        xlabel('Time');
+        legend('AgAb')
+        % ylim([0.0999,1e-1])
 end        
 %%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%
 if plot_C1bar==1
-        subplot(rows,cols,2)
+        subplot(rows,cols,3)
         hold on
         set(gca,'Fontsize',30);box on;
         plot(t_eval, C1bar', 'Color',colors(j,:), 'LineWidth', 2);
@@ -209,7 +224,7 @@ end
 
 %%%%%%%%%%%%%%%%
 if plot_C4==1
-        subplot(rows,cols,1)
+        subplot(rows,cols,4)
         hold on
         set(gca,'Fontsize',30);box on;
         plot(t_eval, C4', 'Color',colors(j,:), 'LineWidth', 2);
@@ -290,7 +305,7 @@ if plot_MAC==1
         legend('MAC')
 end
 
-ylim([0,1e-5])
+% ylim([0,1e-5])
 
 
 

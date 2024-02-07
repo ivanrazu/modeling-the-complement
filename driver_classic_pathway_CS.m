@@ -22,7 +22,7 @@ K_9 = 0.3 * 10^(-6); % arbitrarily chosen to obtain biologically relevant trajec
 % 
 % AgAb = 2.5 * 10^7;   % arbitrarily chosen to obtain biologically relevant trajectory
 
-KAgAb = 1 * 10^(-7);
+KAgAb = 0.5 * 10^(1);
 
 FH=0;
 C4bp=0;
@@ -36,6 +36,9 @@ MCP=0;
 
 % K9=K9*1e-4;
 % K_9=K_9*5e10;
+
+% K_1=K_1*9e11;
+K0=10.7722;
 
 
 params = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9,FH,C4bp,DAF,CR1,CR2,MCP,KAgAb];
@@ -64,6 +67,9 @@ MAC_0 = 0;
 
 AgAb_0=1e2;
 
+
+
+
 initial_conditions = [C1_0, C1bar_0, C4_0, C1barC4_0, C4a_0, C4b_0, C2_0, ...
     C4b2_0, C4bC2a_0, C2b_0, C3_0, C4bC2aC3_0, C4bC2ac3b_0, ...
     C3a_0, C5_0, C4bC2aC3bC5_0, C4bC2aC3bC5b_0, C5a_0, C6789_0, MAC_0,AgAb_0]/1000;
@@ -80,6 +86,32 @@ t_eval = linspace(t_span(1), t_span(2), 1000);
 % Evaluate solution
 sol_values = deval(sol, t_eval);
 
+%%
+
+C1 = sol_values(1, :);
+C1bar = sol_values(2, :);
+C4 = sol_values(3, :);
+C1barC4 = sol_values(4, :);
+C4a = sol_values(5, :);
+C4b = sol_values(6, :);
+C2 = sol_values(7, :);
+C4b2 = sol_values(8, :);
+C4bC2a = sol_values(9, :);
+C2b = sol_values(10, :);
+C3 = sol_values(11, :);
+C4bC2aC3 = sol_values(12, :);
+C4bC2aC3b = sol_values(13, :);
+C3a = sol_values(14, :);
+C5 = sol_values(15, :);
+C4bC2aC3bC5 = sol_values(16, :);
+C4bC2aC3bC5b = sol_values(17, :);
+C5a = sol_values(18, :);
+C6C7C8C9 = sol_values(19, :);
+MAC = sol_values(20, :);
+AgAb = sol_values(21, :);
+
+
+%%
 % Plot the results
 cols=3;
 rows=2;
@@ -88,17 +120,17 @@ figure;
 
 subplot(rows,cols,1)
 hold on
-plot(t_eval, sol_values(1, :), 'LineWidth', 2, 'DisplayName', 'C1');
+plot(t_eval,C1, 'LineWidth', 2, 'DisplayName', 'C1');
 hold on;
-plot(t_eval, sol_values(2, :), 'LineWidth', 2, 'DisplayName', 'C1bar');
+plot(t_eval,C1bar, 'LineWidth', 2, 'DisplayName', 'C1bar');
 hold on
-plot(t_eval, sol_values(7, :), 'LineWidth', 2, 'DisplayName', 'C2');
+plot(t_eval, C2, 'LineWidth', 2, 'DisplayName', 'C2');
 hold on
-plot(t_eval, sol_values(11, :), 'LineWidth', 2, 'DisplayName', 'C3');
+plot(t_eval, C3, 'LineWidth', 2, 'DisplayName', 'C3');
 hold on
-plot(t_eval, sol_values(3, :), 'LineWidth', 2, 'DisplayName', 'C4');
+plot(t_eval, C4, 'LineWidth', 2, 'DisplayName', 'C4');
 hold on
-plot(t_eval, sol_values(15, :), 'LineWidth', 2, 'DisplayName', 'C5');
+plot(t_eval, C5, 'LineWidth', 2, 'DisplayName', 'C5');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
@@ -111,9 +143,7 @@ hold off;
 % figure;
 
 subplot(rows,cols,2)
-plot(t_eval, sol_values(13, :), 'LineWidth', 2, 'DisplayName', 'C4bC2aC3b');
-hold on
-plot(t_eval, sol_values(4, :), 'LineWidth', 2, 'DisplayName', 'C1barC4');
+plot(t_eval, C1barC4, 'LineWidth', 2, 'DisplayName', 'C1barC4');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
@@ -122,11 +152,9 @@ grid on;
 hold off;
 %%
 subplot(rows,cols,3)
-plot(t_eval, sol_values(8, :), 'LineWidth', 2, 'DisplayName', 'C4b2');
+plot(t_eval, C4b2, 'LineWidth', 2, 'DisplayName', 'C4b2');
 hold on
-plot(t_eval, sol_values(12, :), 'LineWidth', 2, 'DisplayName', 'C4bC2aC3');
-hold on
-plot(t_eval, sol_values(16, :), 'LineWidth', 2, 'DisplayName', 'C4bC2aC3bC5');
+plot(t_eval, C4bC2aC3, 'LineWidth', 2, 'DisplayName', 'C4bC2aC3');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
@@ -137,9 +165,11 @@ hold off;
 
 % figure;
 subplot(rows,cols,4)
-plot(t_eval, sol_values(9, :), 'LineWidth', 2, 'DisplayName', 'C4bC2a');
+plot(t_eval, C4bC2a, 'LineWidth', 2, 'DisplayName', 'C4bC2a');
 hold on
-plot(t_eval, sol_values(17, :), 'LineWidth', 2, 'DisplayName', 'C4bC2aC3bC5b');
+plot(t_eval, C4bC2aC3bC5b, 'LineWidth', 2, 'DisplayName', 'C4bC2aC3bC5b');
+hold on
+plot(t_eval, C4bC2aC3b, 'LineWidth', 2, 'DisplayName', 'C4bC2aC3b');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
@@ -149,15 +179,15 @@ hold off;
 %%
 % figure;
 subplot(rows,cols,5)
-plot(t_eval, sol_values(5, :), 'LineWidth', 2, 'DisplayName', 'C4a');
+plot(t_eval, C4a, 'LineWidth', 2, 'DisplayName', 'C4a');
 hold on
-plot(t_eval, sol_values(6, :), 'LineWidth', 2, 'DisplayName', 'C4b');
+plot(t_eval, C4b, 'LineWidth', 2, 'DisplayName', 'C4b');
 hold on
-plot(t_eval, sol_values(10, :), 'LineWidth', 2, 'DisplayName', 'C2b');
+plot(t_eval, C2b, 'LineWidth', 2, 'DisplayName', 'C2b');
 hold on
-plot(t_eval, sol_values(14, :), 'LineWidth', 2, 'DisplayName', 'C3a');
+plot(t_eval, C3a, 'LineWidth', 2, 'DisplayName', 'C3a');
 hold on
-plot(t_eval, sol_values(18, :), 'LineWidth', 2, 'DisplayName', 'C5a');
+plot(t_eval,C5a, 'LineWidth', 2, 'DisplayName', 'C5a');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
@@ -168,9 +198,9 @@ hold off;
 % figure;
 subplot(rows,cols,6)
 hold on
-plot(t_eval, sol_values(19, :), 'LineWidth', 2, 'DisplayName', 'C6C7C8C9');
+plot(t_eval, C6C7C8C9, 'LineWidth', 2, 'DisplayName', 'C6C7C8C9');
 hold on
-plot(t_eval, sol_values(20, :), 'LineWidth', 2, 'DisplayName', 'MAC');
+plot(t_eval, MAC, 'LineWidth', 2, 'DisplayName', 'MAC');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
@@ -180,7 +210,29 @@ hold off;
 
 %% 
 figure
-plot(t_eval, sol_values(21, :), 'LineWidth', 2, 'DisplayName', 'AgAb');
+subplot(2,2,1)
+plot(t_eval, C4, 'LineWidth', 2, 'DisplayName', 'C4');
+hold on
+plot(t_eval, C1, 'LineWidth', 2, 'DisplayName', 'C1');
+xlabel('Time');
+ylabel('Population');
+legend('Location', 'Best');
+title('Classic Pathway Dynamics');
+grid on;
+
+
+subplot(2,2,2)
+plot(t_eval, AgAb, 'LineWidth', 2, 'DisplayName', 'AgAb');
+xlabel('Time');
+ylabel('Population');
+legend('Location', 'Best');
+title('Classic Pathway Dynamics');
+grid on;
+hold off;
+
+
+subplot(2,2,3)
+plot(t_eval, C4bC2aC3bC5, 'LineWidth', 2, 'DisplayName', 'C4bC2aC3bC5');
 xlabel('Time');
 ylabel('Population');
 legend('Location', 'Best');
