@@ -1,5 +1,7 @@
 clear
 
+% Testing 
+
 
 % Define parameters
 K0 = 0.5 * 10^(1); % arbitrarily chosen to obtain biologically relevant trajectory
@@ -57,8 +59,6 @@ b_vec = [K0*10,K1*10,K_1*5e11];
 % name_vec_latex={'$K_{AgAb}$'};
 % a_vec = [KAgAb*0.0001];
 % b_vec = [KAgAb*1];
-
-
 
 %%
 % Set =1 depending on which variable want to plot 
