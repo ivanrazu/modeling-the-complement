@@ -48,15 +48,17 @@ par_str={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K
 % b_vec = [K0,K1*10,K_1*100,K2*10];
 
 
-% name_vec={'K0','K1','K_1'};
-% name_vec_latex={'$K_0$','$K_1$','$K_{-1}$'};
-% a_vec = [K0*0.1,K1*0.1,K_1*1e11];
-% b_vec = [K0*10,K1*10,K_1*5e11];
+name_vec={'K0','K1','K_1'};
+name_vec_latex={'$K_0$','$K_1$','$K_{-1}$'};
+a_vec = [K0*0.1,K1*0.1,K_1*1e11];
+b_vec = [K0*10,K1*10,K_1*5e11];
 
-name_vec={'KAgAb'};
-name_vec_latex={'$K_{AgAb}$'};
-a_vec = [KAgAb*0.0001];
-b_vec = [KAgAb*1];
+% name_vec={'KAgAb'};
+% name_vec_latex={'$K_{AgAb}$'};
+% a_vec = [KAgAb*0.0001];
+% b_vec = [KAgAb*1];
+
+
 
 %%
 % Set =1 depending on which variable want to plot 
@@ -70,7 +72,6 @@ plot_C4a=0;
 plot_C4b=0;
 plot_C6C7C8C9=0;
 plot_MAC=0;
-
 
 np=10;
 rows=2;
@@ -188,7 +189,7 @@ if plot_C1==1
         hold on
         set(gca,'linewidth',2)
         xlabel('Time');
-        legend('C1')
+        legend('C1','Location','southwest')
         ylim([0,5e-7])
 end        
 %%%%%%%%%%%%%%%%
@@ -203,7 +204,7 @@ if plot_AgAb==1
         hold on
         set(gca,'linewidth',2)
         xlabel('Time');
-        legend('AgAb')
+        legend('AgAb','Location','southwest')
         % ylim([0.0999,1e-1])
 end        
 %%%%%%%%%%%%%%%%
@@ -218,7 +219,7 @@ if plot_C1bar==1
         hold on
         set(gca,'linewidth',2)
         xlabel('Time');
-        legend('C1bar')
+        legend('C1bar','Location','northwest')
 end
 %%%%%%%%%%%%%%%%
 
@@ -311,7 +312,7 @@ end
 
     end
 
-    dim = [.2 .63 .9 .3];
+    dim = [.45 .7 .9 .3];
     annotation('textbox',dim,'String',name_latex,'interpreter','latex','Fontsize',40,'FontName','Calibri' ,'Color', 'k','EdgeColor','none');
 
 
