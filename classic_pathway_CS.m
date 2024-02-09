@@ -25,7 +25,6 @@ function dydt = classic_pathway_CS(t, y, params)
     MAC = y(20);
     AgAb = y(21);
     
-
     % Defining model parameters
     K0 = params(1);
     K1 = params(2);
@@ -51,12 +50,14 @@ function dydt = classic_pathway_CS(t, y, params)
     MCP=params(21);
 
     KAgAb=params(22);
+    KC1inh=params(23);
+    C1inh=params(24);
 
 
     % Differential Equations
     dC1_dt = - K0 * C1 * AgAb;
 
-    dC1bar_dt = K0 * C1 * AgAb - K1 * C1bar * C4 + K_1 * C1barC4 + K2 * C1barC4;
+    dC1bar_dt = K0 * C1 * AgAb - K1 * C1bar * C4 + K_1 * C1barC4 + K2 * C1barC4 - KC1inh * C1bar * C1inh;
 
     dC4_dt = -K1 * C1bar * C4 + K_1 * C1barC4;
 

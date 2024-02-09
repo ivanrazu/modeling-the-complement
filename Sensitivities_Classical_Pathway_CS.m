@@ -4,7 +4,9 @@ clear
 
 
 % Define parameters
-K0 = 0.5 * 10^(1); % arbitrarily chosen to obtain biologically relevant trajectory
+% K0 = 0.5 * 10^(1); % arbitrarily chosen to obtain biologically relevant trajectory
+K0=10.7722;
+
 
 % Parameters taken from Hirayama et al 1996
 K1 = 0.5 * 10^8;
@@ -20,11 +22,12 @@ K7 = 2.1 * 10^8;
 K_7 = 0.43 * 10^(-6);
 K8 = 4.8 * 10^8;
 
-K9 = 8 * 10^(12); % arbitrarily chosen to obtain biologically relevant trajectory
-K_9 = 0.3 * 10^(-12); % arbitrarily chosen to obtain biologically relevant trajectory
+K9 = 8 * 10^(7); % arbitrarily chosen to obtain biologically relevant trajectory
+K_9 = 0.3 * 10^(-6); % arbitrarily chosen to obtain biologically relevant trajectory
 
 KAgAb = 0.5 * 10^(1);   % arbitrarily chosen to obtain biologically relevant trajectory
-
+KC1inh=0.06*1e3;
+C1inh=1.9231*10^(-6); % Taken from Hirayama 
 
 FH=0;
 C4bp=0;
@@ -34,7 +37,7 @@ CR2=0;
 MCP=0;
 
 par_str={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K_7', 'K8', 'K9', 'K_9'...
-    ,'FH','C4bp','DAF','CR1','CR2','MCP','KAgAb'};
+    ,'FH','C4bp','DAF','CR1','CR2','MCP','KAgAb','KC1inh','C1inh'};
 %%  Edit name_vec,name_vec_latex, a_vec, and b_vec accordingly
 
 % name_vec={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K_7', 'K8', 'K9', 'K_9'...
@@ -50,32 +53,42 @@ par_str={'K0', 'K1', 'K_1', 'K2', 'K3', 'K_3', 'K4', 'K5', 'K_5', 'K6', 'K7', 'K
 % b_vec = [K0,K1*10,K_1*100,K2*10];
 
 
-name_vec={'K0','K1','K_1'};
-name_vec_latex={'$K_0$','$K_1$','$K_{-1}$'};
-a_vec = [K0*0.1,K1*0.1,K_1*1e11];
-b_vec = [K0*10,K1*10,K_1*5e11];
+% name_vec={'K0','K1','K_1'};
+% name_vec_latex={'$K_0$','$K_1$','$K_{-1}$'};
+% a_vec = [K0*0.1,K1*0.1,K_1*1e11];
+% b_vec = [K0*10,K1*10,K_1*5e11];
 
 % name_vec={'KAgAb'};
 % name_vec_latex={'$K_{AgAb}$'};
 % a_vec = [KAgAb*0.0001];
 % b_vec = [KAgAb*1];
 
+name_vec={'KC1inh'};
+name_vec_latex={'$K_{C1inh}$'};
+a_vec = [KC1inh];
+b_vec = [KC1inh*1e5];
+
+
 %%
 % Set =1 depending on which variable want to plot 
 plot_C1=1;
 plot_C1bar=1;
-plot_AgAb=1;
+plot_AgAb=0;
 
-plot_C4=1;
+plot_C4=0;
 plot_C1barC4=0;
 plot_C4a=0;
 plot_C4b=0;
-plot_C6C7C8C9=0;
-plot_MAC=0;
 
-np=10;
+plot_C4bC2a=1;    % C3 convertase
+plot_C4bC2aC3b=1; % C5 convertase
+
+plot_C6C7C8C9=1;
+plot_MAC=1;
+
+np=20;
 rows=2;
-cols=2;
+cols=3;
 %%
 
 
@@ -98,13 +111,13 @@ C5_0 = 44.44 * 10^(-5);
 C4bC2aC3bC5_0 = 0;
 C4bC2aC3bC5b_0 = 0;
 C5a_0 = 0;
-C6789_0 = 0;
+C6789_0 = 2*10^(-4); % arbitrarily chosen to obtain biologically relevant trajectory
 MAC_0 = 0;
 
 AgAb_0=1e2;
 
 
-params = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9,FH,C4bp,DAF,CR1,CR2,MCP,KAgAb];
+params = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9,FH,C4bp,DAF,CR1,CR2,MCP,KAgAb,KC1inh,C1inh];
 
 
 initial_conditions = [C1_0, C1bar_0, C4_0, C1barC4_0, C4a_0, C4b_0, C2_0, ...
@@ -152,31 +165,31 @@ hold on;
             pars_new=[params(1:idx-1),vec(j)];
         end
 
-        solv = ode23s(@classic_pathway_CS, t_eval, initial_conditions, [], pars_new);
+        sol = ode23s(@classic_pathway_CS, t_eval, initial_conditions, [], pars_new);
 
-        Ys = deval(solv, t_eval)';
+        Ys = deval(sol, t_eval);
 
-        C1  = Ys(:,1);
-        C1bar = Ys(:,2);
-        C4 = Ys(:,3);
-        C1barC4  = Ys(:,4);
-        C4a=Ys(:,5);
-        C4b=Ys(:,6);
-        C2=Ys(:,7);
-        C4b2=Ys(:,8);
-        C4bC2a=Ys(:,9);
-        C2b=Ys(:,10);
-        C3=Ys(:,11);
-        C4bC2aC3=Ys(:,12);
-        C4bC2aC3b=Ys(:,13);
-        C3a=Ys(:,14);
-        C5=Ys(:,15);
-        C4bC2aC3bC5=Ys(:,16);
-        C4bC2aC3bC5b=Ys(:,17);
-        C5a=Ys(:,18);
-        C6C7C8C9=Ys(:,19);
-        MAC=Ys(:,20);
-        AgAb=Ys(:,21);
+        C1  = Ys(1,:);
+        C1bar = Ys(2,:);
+        C4 = Ys(3,:);
+        C1barC4  = Ys(4,:);
+        C4a=Ys(5,:);
+        C4b=Ys(6,:);
+        C2=Ys(7,:);
+        C4b2=Ys(8,:);
+        C4bC2a=Ys(9,:);
+        C2b=Ys(10,:);
+        C3=Ys(11,:);
+        C4bC2aC3=Ys(12,:);
+        C4bC2aC3b=Ys(13,:);
+        C3a=Ys(14,:);
+        C5=Ys(15,:);
+        C4bC2aC3bC5=Ys(16,:);
+        C4bC2aC3bC5b=Ys(17,:);
+        C5a=Ys(18,:);
+        C6C7C8C9=Ys(19,:);
+        MAC=Ys(20,:);
+        AgAb=Ys(21,:);
 
 
 %%%%%%%%%%%%%%%%
@@ -184,7 +197,7 @@ if plot_C1==1
         subplot(rows,cols,1)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C1', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C1, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -199,7 +212,7 @@ if plot_AgAb==1
         subplot(rows,cols,2)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, AgAb', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, AgAb, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -211,10 +224,10 @@ end
 
 %%%%%%%%%%%%%%%%
 if plot_C1bar==1
-        subplot(rows,cols,3)
+        subplot(rows,cols,2)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C1bar', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C1bar, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -228,7 +241,7 @@ if plot_C4==1
         subplot(rows,cols,4)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C4', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C4, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -239,10 +252,10 @@ end
 
 %%%%%%%%%%%%%%%%
 if plot_C1barC4==1
-        subplot(rows,cols,4)
+        subplot(rows,cols,5)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C1barC4', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C1barC4, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -256,7 +269,7 @@ if plot_C4a==1
         subplot(rows,cols,5)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C4a', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C4a, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -270,7 +283,7 @@ if plot_C4b==1
         subplot(rows,cols,6)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C4b', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C4b, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -279,12 +292,43 @@ if plot_C4b==1
 end        
 %%%%%%%%%%%%%%%%
 
+
 %%%%%%%%%%%%%%%%
-if plot_C6C7C8C9==1
-        subplot(rows,cols,1)
+if plot_C4bC2a==1
+        subplot(rows,cols,3)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, C6C7C8C9', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, C4bC2a, 'Color',colors(j,:), 'LineWidth', 2);
+        grid off
+        hold on
+        set(gca,'linewidth',2)
+        xlabel('Time');
+        legend('C4bC2a')
+end        
+%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%
+if plot_C4bC2aC3b==1
+        subplot(rows,cols,4)
+        hold on
+        set(gca,'Fontsize',30);box on;
+        plot(t_eval, C4bC2aC3b, 'Color',colors(j,:), 'LineWidth', 2);
+        grid off
+        hold on
+        set(gca,'linewidth',2)
+        xlabel('Time');
+        legend('C4bC2aC3b')
+end        
+%%%%%%%%%%%%%%%%
+
+
+
+%%%%%%%%%%%%%%%%
+if plot_C6C7C8C9==1
+        subplot(rows,cols,5)
+        hold on
+        set(gca,'Fontsize',30);box on;
+        plot(t_eval, C6C7C8C9, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
@@ -295,10 +339,10 @@ end
 
 %%%%%%%%%%%%%%%%
 if plot_MAC==1
-        subplot(rows,cols,2)
+        subplot(rows,cols,6)
         hold on
         set(gca,'Fontsize',30);box on;
-        plot(t_eval, MAC', 'Color',colors(j,:), 'LineWidth', 2);
+        plot(t_eval, MAC, 'Color',colors(j,:), 'LineWidth', 2);
         grid off
         hold on
         set(gca,'linewidth',2)
