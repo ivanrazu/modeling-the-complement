@@ -26,15 +26,15 @@ KAgAb = 0.5 * 10^(1);
 KC1inh=0.06*1e3;
 C1inh=1.9231*10^(-6); % Taken from Hirayama 
 
-FH=0;
-C4bp=0;
+FH=2.25*10^(-6)*0 ;% Taken from Hirayama
+C4bp=7.01754*10^(-8)*0;% Taken from Hirayama
+
 DAF=0;
 CR1=0;
 CR2=0;
 MCP=0;
 
 % KAgAb=0;
-
 
 params = [K0, K1, K_1, K2, K3, K_3, K4, K5, K_5, K6, K7, K_7, K8, K9, K_9,FH,C4bp,DAF,CR1,CR2,MCP,KAgAb,KC1inh,C1inh];
 
@@ -67,7 +67,7 @@ initial_conditions = [C1_0, C1bar_0, C4_0, C1barC4_0, C4a_0, C4b_0, C2_0, ...
     C3a_0, C5_0, C4bC2aC3bC5_0, C4bC2aC3bC5b_0, C5a_0, C6789_0, MAC_0,AgAb_0]/1000;
 
 % Time span
-tspan = [0, 1];
+tspan = [0, 2];
 
 % Call solver
 sol = ode23s(@classic_pathway_CS, tspan, initial_conditions, [], params);

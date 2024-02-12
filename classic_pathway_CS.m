@@ -77,7 +77,7 @@ function dydt = classic_pathway_CS(t, y, params)
     
     dC3_dt = -K5 * C4bC2a * C3 + K_5 * C4bC2aC3;
 
-    dC4bC2aC3_dt = K5 * C4bC2a * C3 - K_5 * C4bC2aC3 - K6 * C4bC2aC3 + FH + C4bp;
+    dC4bC2aC3_dt = K5 * C4bC2a * C3 - K_5 * C4bC2aC3 - K6 * C4bC2aC3 + FH + C4bp;% Not clear why these here according to Hirayama + FH + C4bp;
     
     dC4bC2aC3b_dt = K6 * C4bC2aC3 - K7 * C4bC2aC3b * C5 + K_7 * C4bC2aC3bC5 - FH- C4bp - DAF - CR1 - CR2 -MCP;
     
