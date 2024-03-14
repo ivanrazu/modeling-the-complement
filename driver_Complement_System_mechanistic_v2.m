@@ -60,10 +60,11 @@ Kcp = 0.01;
 Klp= 0.2;
 
 C1inhstar = 1;
-muc3convcplp = 1e-1;
-Kc3convap = 1e-3*0.5;
+muc3convcplp = 1e-2;
+
+Kc3convap = 1e-1*4;
 C3H2Ostar= 1e0;
-muc3convap = 3e-1;
+muc3convap = 3e-2;
 
 Kc5conv = 1e-1;
 Kc5convhs = 1e1;
@@ -84,7 +85,7 @@ FHstar = 1;
 FIstar = 1;
 muc3b = 4e-2;
 
-Kc3h2o = 0.002;
+Kc3h2o = 0.0001; % 1/min  K1 in Bakshi et al 2020, reference Pangburn et al 1981
 muc3h2o = 5e-2;
 
 KAc = 0.1;
@@ -115,16 +116,17 @@ dan = 1e-1;
 
 sc1inh = 0.2*0 ;
 muc1inh = 1e-1*0 ;
-sfb = 0.3 *0;
-mufb = 1e-1 *0;
-sfh = 0.3 *0;
-mufh = 1e-2 *0;
+
+sfb = 0.000798; % muM/min, ks2 in Bakshi et al, reference Alper and Rosen 1984
+mufb = 0.000333; % 1/min d2 in Bakshi et al, reference Alper and Rosen 1984
+sfh = 0.00067;  % muM/min, ks3 in Bakshi et al, reference Charlesworth et al 1979, Dopler et al 2019
+mufh = 0.00022; % 1/min d3 in Bakshi et al, reference Charlesworth et al 1979, Dopler et al 2019
 sfi = 0.2 *0;
 mufi = 1e-2 *0;
 
-Kp=1e-2;
-mup=1e-2;
-Pstar=1e1;
+Kp=0.00007; % muM/min ks4 in Bakshi et al, reference Ziegler et al 1975
+mup=0.000016; % 1/min d4 in Bakshi et al, reference Ziegler et al 1975
+Pstar=1e0;
 
 
 
@@ -141,7 +143,7 @@ initial_conditions = [C1_0, C2_0, C3_0, C4_0, C5_0, ...
    Ah_0,Am_0, N_0, C1inh_0, FB_0, FH_0, FI_0,P_0];
 
 % Time span
-tspan = [0, 500];
+tspan = [0, 250];
 
 % Call solver
 sol = ode23s(@Complement_System_mechanistic_v2, tspan, initial_conditions, [], params);

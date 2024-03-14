@@ -24,6 +24,7 @@ function dydt = classic_pathway_CS(t, y, params)
     C6C7C8C9 = y(19);
     MAC = y(20);
     AgAb = y(21);
+    % C4bp = y(22);
     
     % Defining model parameters
     K0 = params(1);

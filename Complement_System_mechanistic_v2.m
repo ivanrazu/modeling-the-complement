@@ -137,7 +137,7 @@ dC1inh_dt = sc1inh - muc1inh * C1inh;
 dFB_dt = sfb - mufb * FB;
 dFH_dt = sfh - mufh * FH;
 dFI_dt = sfi - mufi* FI;
-dP_dt= Kp * N - mup * P;
+dP_dt= Kp - mup * P;
 
 dydt = [dC1_dt,dC2_dt,dC3_dt,dC4_dt,dC5_dt,...
     dC3convCPLP_dt,dC3convAP_dt,dC5conv_dt,...
