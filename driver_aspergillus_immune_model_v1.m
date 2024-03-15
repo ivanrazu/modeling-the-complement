@@ -2,51 +2,57 @@ clear
 
 % Define parameters
 
-Kac = 0.0250*4;      
+Kac =0.79*2;      
 Acmax = 1e5;    
-dacm = 0.012*5*5;     
-dacn = 0.06;   
+dacm = 0.012*5*5*0.5;     
+dacn = 18*0.9;   
 
-Kah = 0.03*1.8;
+Kah = 0.27*2;
 Ahmax = 1e5;
-dahn =0.06;
-Kc5a = 0.1;
+dahn =0.02*0.5;
+Kc5a = 0.09;
 Aifstar=1e1;
 muc5a=0.1;
 
-Km=0.0320;
+Kmm=0.0320;
 
 mum=0.0224*2*2*2;
 
-Kn=0.0464;
+Knn=0.0464;
 
 mun =0.0324*2*2*2;
 
 Krn =0.05;
 Krm =0.05;
 
-mur=0.06*13;
-sai=0.3;
+mur=0.06*16;
+sai=0.3/6;
+
 Kain=0.02;
 Kaim=0.04;
-muai=0.03;
+
+muai=0.03*6;
+
 Kdr=0.004;
 Kdn=0.0320;
 mud =1.2;
 
 dn=0.02;
 dm = 0.02;
-Kai=4;
+Kai=12/3;
 
-drm = 0.02*0.05;
-drn=0.02*0.05;
+drm = 0.02*0.01*0.1;
+drn=0.02*0.01*0.1;
 
 Kd=4;
 alpha=2.5;
-beta=1.5;
+beta=2;
 
 Kna= 0.05;
 Kma = 0.05;
+Kn = 4.56;
+Km = 6;
+Kr = 45;
 
 Ac0=1e2;
 Ah0=0;
@@ -58,8 +64,8 @@ Aif0=sai/muai;
 D0=0;
 
 params = [Kac, Acmax,dacm,dacn,Kah,Ahmax,dahn,Kc5a,Aifstar,muc5a,...
-    Km,mum,Kn,mun,Krn,Krm,mur,sai,Kain,Kaim,muai,Kdr,Kdn,mud,dn,...
-    dm,Kai,drm,drn,Kd,alpha,beta,Kna,Kma];
+    Kmm,mum,Knn,mun,Krn,Krm,mur,sai,Kain,Kaim,muai,Kdr,Kdn,mud,dn,...
+    dm,Kai,drm,drn,Kd,alpha,beta,Kna,Kma,Kn,Km,Kr];
 
 initial_conditions = [Ac0,Ah0,C5a0,N0,M0,R0,Aif0,D0];
 
@@ -101,6 +107,7 @@ plot(t_eval,Ac, 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color
 hold on;
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{2});
 xlim([0,20])
+ylim([0,200])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
@@ -123,7 +130,7 @@ plot(t_eval, N, 'LineWidth', 2, 'DisplayName', 'N','LineStyle',linestyle,'Color'
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,100])
+ylim([0,10000])
 grid on;
 %%
 subplot(rows,cols,4)
@@ -133,7 +140,7 @@ hold on
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,40])
+ylim([0,100])
 grid on;
 %%
 subplot(rows,cols,5)

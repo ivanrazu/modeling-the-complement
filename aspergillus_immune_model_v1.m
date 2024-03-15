@@ -25,9 +25,9 @@ dahn =params(7);
 Kc5a = params(8);
 Aifstar=params(9);
 muc5a=params(10);
-Km=params(11);
+Kmm=params(11);
 mum=params(12);
-Kn=params(13);
+Knn=params(13);
 mun =params(14);
 Krn =params(15);
 Krm =params(16);
@@ -49,26 +49,29 @@ alpha=params(31);
 beta=params(32);
 Kna = params(33);
 Kma = params(34);
+Kn = params(35);
+Km = params(36);
+Kr = params(37);
 
 % Differential Equations
 
 % Asperg. conidia
-dAc_dt = 6*Kac * Ac * (1-Ac/Acmax) - Ac/(1 + Ac)   - 1/(1+(Aif/Aifstar))*dacm  * Ac * M * R/(1+alpha*Ac) - 100*3/(1+(Aif/Aifstar))*dacn * Ac * N * R/(1+alpha*Ac);
+dAc_dt = Kac * Ac * (1-Ac/Acmax) - 0.1*Ac/(1 + Ac)   - 1/(1+(Aif/Aifstar)^2)*dacm  * Ac * M * R/(1+alpha*Ac) - 1/(1+(Aif/Aifstar)^2)*dacn * Ac * N * R/(1+alpha*Ac);
 
 % Asperg. hyphae
-dAh_dt = 2*Kah * Ac  - dahn  * Ah * N * R/(1+beta*Ah) ;
+dAh_dt = Kah * Ac  - dahn  * Ah * N * R/(1+beta*Ah) ;
 
 % C5a anaphalytoxin
-dC5a_dt = 0.9*Kc5a * A/(1+Aif/Aifstar) - muc5a * C5a;
+dC5a_dt = Kc5a * A/(1+Aif/Aifstar)^2 - muc5a * C5a;
 
 % Neutrophils
-dN_dt = 1.5*3.8*(Kn* C5a * N + Kna * A)/(1+(Aif/Aifstar)) - mun * (1+dn*Ac*R )*N ;
+dN_dt = Kn*(Knn* C5a * N + Kna * A)/(1+(Aif/Aifstar)^2) - mun * (1+dn*Ac*R )*N ;
 
 % Macrophages
-dM_dt = 1.5*4*(Km * C5a * M + Kma * A)/(1+(Aif/Aifstar)) - mum * (1+dm*Ac*R)*M;
+dM_dt = Km*(Kmm * C5a * M + Kma * A)/(1+(Aif/Aifstar)^2) - mum * (1+dm*Ac*R)*M;
 
 % ROS
-dR_dt = 40*(Krn*N+Krm*M)/(1+(Krn*N+Krm*M)) - mur*(1 +drm*M + drn*N)*R;
+dR_dt = Kr *(Krn*N+Krm*M)/(1+(Krn*N+Krm*M)) - mur*(1 +drm*M + drn*N)*R;
 
 % Ainti-inflammatory mediators
 dAif_dt = sai +  Kai*(Kain *N + Kaim * M)/( 1 + (Kain *N + Kaim * M)) - muai * Aif;
