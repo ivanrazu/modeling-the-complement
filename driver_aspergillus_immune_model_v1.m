@@ -2,21 +2,21 @@ clear
 
 % Define parameters
 
-Kac =0.79*2;      
+Kac =0.7;      
 Acmax = 1e5;    
-dacm = 0.012*5*5*0.5;     
-dacn = 18*0.9;   
+dacm = 0.012*5*5;     
+dacn = 18*0.5*0.9;   
 
 Kah = 0.27*2;
 Ahmax = 1e5;
-dahn =0.02*0.5;
+dahn =0.2*10*0.6;
 Kc5a = 0.09;
-Aifstar=1e1;
+Aifstar=3.5;%1e1;
 muc5a=0.1;
 
-Kmm=0.0320;
+Kmm=0.0320*1.3;
 
-mum=0.0224*2*2*2;
+mum=0.0224*2*2*2*4;
 
 Knn=0.0464;
 
@@ -31,14 +31,14 @@ sai=0.3/6;
 Kain=0.02;
 Kaim=0.04;
 
-muai=0.03*6;
+muai=0.03*5;
 
 Kdr=0.004;
 Kdn=0.0320;
 mud =1.2;
 
-dn=0.02;
-dm = 0.02;
+dn=0.02*2;
+dm = 0.01*2*2;
 Kai=12/3;
 
 drm = 0.02*0.01*0.1;
@@ -49,12 +49,34 @@ alpha=2.5;
 beta=2;
 
 Kna= 0.05;
-Kma = 0.05;
-Kn = 4.56;
-Km = 6;
+Kma = 0.05*1;
+Kn = 4.56*1.2;
+Km = 5;
 Kr = 45;
+Kns=0.4;
 
-Ac0=1e2;
+Knd = 0.5;
+Kmd = 0.5;
+Kaid = 0.05;
+
+
+Km=5.4;
+
+Kmm=Knn*0.2;
+mum=mun;
+Kns=Kns*2;
+
+dacm=0.1*0.5;
+dacn = 0.4;
+
+mun=mun*2;
+mum=mum*2;
+
+
+gamma= 0.5;
+
+
+Ac0=1e0;
 Ah0=0;
 C5a0=0;
 N0=1e1*0;
@@ -64,19 +86,21 @@ Aif0=sai/muai;
 D0=0;
 
 params = [Kac, Acmax,dacm,dacn,Kah,Ahmax,dahn,Kc5a,Aifstar,muc5a,...
-    Kmm,mum,Knn,mun,Krn,Krm,mur,sai,Kain,Kaim,muai,Kdr,Kdn,mud,dn,...
-    dm,Kai,drm,drn,Kd,alpha,beta,Kna,Kma,Kn,Km,Kr];
+          Kmm,mum,Knn,mun,Krn,Krm,mur,sai,Kain,Kaim,...
+          muai,Kdr,Kdn,mud,dn,dm,Kai,drm,drn,Kd,...
+          alpha,beta,Kna,Kma,Kn,Km,Kr,Kns,Knd, Kmd,...
+          Kaid,gamma];
 
 initial_conditions = [Ac0,Ah0,C5a0,N0,M0,R0,Aif0,D0];
 
 % Time span
-tspan = [0, 100];
+tspan = [0, 50];
 
 % Call solver
 sol = ode15s(@aspergillus_immune_model_v1, tspan, initial_conditions, [], params);
 
 % Time points for which to evaluate the solution
-t_eval = (0:0.0001:tspan(2));
+t_eval = (0:0.01:tspan(2));
 
 % Evaluate solution
 Ys = deval(sol, t_eval);
@@ -106,11 +130,12 @@ hold on
 plot(t_eval,Ac, 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
 hold on;
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{2});
-xlim([0,20])
-ylim([0,200])
+xlim([0,50])
+ylim([0,2])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
+% ylim([0,500])
 grid on;
 %%
 subplot(rows,cols,2)
@@ -119,6 +144,8 @@ plot(t_eval, C5a, 'LineWidth', 2, 'DisplayName', 'C5a','LineStyle',linestyle,'Co
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
+% ylim([0,3e2])
+xlim([0,tspan(end)])
 grid on;
 
 %%
@@ -130,7 +157,8 @@ plot(t_eval, N, 'LineWidth', 2, 'DisplayName', 'N','LineStyle',linestyle,'Color'
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,10000])
+% ylim([0,10])
+xlim([0,tspan(end)])
 grid on;
 %%
 subplot(rows,cols,4)
@@ -140,7 +168,8 @@ hold on
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,100])
+ylim([0,40])
+xlim([0,tspan(end)])
 grid on;
 %%
 subplot(rows,cols,5)
@@ -149,6 +178,8 @@ plot(t_eval, Aif, 'LineWidth', 2, 'DisplayName', 'Aif','LineStyle',linestyle,'Co
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
+ylim([0,10])
+xlim([0,tspan(end)])
 grid on;
 %%
 subplot(rows,cols,6)
@@ -157,5 +188,7 @@ plot(t_eval, D, 'LineWidth', 2, 'DisplayName', 'D','LineStyle',linestyle,'Color'
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
+ylim([0,1])
+xlim([0,tspan(end)])
 grid on;
 
