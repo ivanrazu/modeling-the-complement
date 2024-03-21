@@ -4,80 +4,70 @@ clear
 
 Kac =0.7;      
 Acmax = 1e5;    
-dacm = 0.012*5*5;     
-dacn = 18*0.5*0.9;   
-
-Kah = 0.27*2;
+dacm = 0.05;     
+dacn = 0.4;   
+Kah = 0.54;
 Ahmax = 1e5;
-dahn =0.2*10*0.6;
+dahn =1.2;
 Kc5a = 0.09;
-Aifstar=3.5;%1e1;
+Aifstar=3.5;
 muc5a=0.1;
 
-Kmm=0.0320*1.3;
+Kmm=0.0093;
 
-mum=0.0224*2*2*2*4;
+mum=0.5184;
 
 Knn=0.0464;
 
-mun =0.0324*2*2*2;
+mun =1.0368;
 
 Krn =0.05;
 Krm =0.05;
 
-mur=0.06*16;
-sai=0.3/6;
+mur=0.96;
+sai=0.05;
 
 Kain=0.02;
 Kaim=0.04;
 
-muai=0.03*5;
+muai=0.15;
 
 Kdr=0.004;
 Kdn=0.0320;
 mud =1.2;
 
-dn=0.02*2;
-dm = 0.01*2*2;
-Kai=12/3;
+dn=0.2;
+dm = 0.04;
+Kai=4;
 
-drm = 0.02*0.01*0.1;
-drn=0.02*0.01*0.1;
+drm = 2e-5;
+drn=2e-5;
 
 Kd=4;
 alpha=2.5;
 beta=2;
 
-Kna= 0.05;
-Kma = 0.05*1;
-Kn = 4.56*1.2;
-Km = 5;
-Kr = 45;
-Kns=0.4;
+Kna= 0.04;
+Kma = 0.04;
 
-Knd = 0.5;
-Kmd = 0.5;
+Kn = 3.6480;
+Km = 5.4;
+Kr = 45;
+Kns=0.8;
+
+Knd = 0.04;
+Kmd = 0.05;
+
 Kaid = 0.05;
 
-
-Km=5.4;
-
-Kmm=Knn*0.2;
-mum=mun;
-Kns=Kns*2;
-
-dacm=0.1*0.5;
-dacn = 0.4;
-
-mun=mun*2;
-mum=mum*2;
-
-
+% mun=0.1155;
+% mum=0.0289;
 
 gamma= 0.5;
+C5astar=0.25;
 
 
-Ac0=1e0*1;
+Ac0=1e0*2;
 Ah0=0;
 C5a0=0;
 N0=1e1*0;
@@ -90,15 +80,15 @@ params = [Kac, Acmax,dacm,dacn,Kah,Ahmax,dahn,Kc5a,Aifstar,muc5a,...
           Kmm,mum,Knn,mun,Krn,Krm,mur,sai,Kain,Kaim,...
           muai,Kdr,Kdn,mud,dn,dm,Kai,drm,drn,Kd,...
           alpha,beta,Kna,Kma,Kn,Km,Kr,Kns,Knd, Kmd,...
-          Kaid,gamma];
+          Kaid,gamma,C5astar];
 
 initial_conditions = [Ac0,Ah0,C5a0,N0,M0,R0,Aif0,D0];
 
 % Time span
-tspan = [0, 15];
+tspan = [0, 50];
 
 % Call solver
-sol = ode15s(@aspergillus_immune_model_v1, tspan, initial_conditions, [], params);
+sol = ode23s(@aspergillus_immune_model_v1, tspan, initial_conditions, [], params);
 
 % Time points for which to evaluate the solution
 t_eval = (0:0.01:tspan(2));
@@ -131,8 +121,8 @@ hold on
 plot(t_eval,Ac, 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
 hold on;
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{2});
-% xlim([0,10])
-% ylim([0,2])
+xlim([0,15])
+ylim([0,10])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
@@ -194,7 +184,7 @@ ylim([0,1])
 xlim([0,tspan(end)])
 grid on;
 %%
-
+return
 % % Plots phagocytosis flux
 
 F_aif = 1./(1+(Aif/Aifstar).^2) ;

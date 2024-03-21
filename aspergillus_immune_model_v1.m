@@ -60,6 +60,8 @@ Knd = params(39);
 Kmd = params(40);
 Kaid = params(41);
 gamma = params(42);
+C5astar = params(43);
+
 % define f
 F_aif = 1/(1+(Aif/Aifstar)^2) ;
 
@@ -75,7 +77,7 @@ dAh_dt = Kah * Ac*(1-Ac/Ahmax)  - dahn  * Ah * N * R * F_aif/(1+beta*Ah) ;
 dC5a_dt = Kc5a * A * F_aif - muc5a * C5a;
 
 % Neutrophils
-dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D) * F_aif / ( 1 + (Knn * C5a * N + Kna * A + Knd * D) * F_aif )  - mun * ( 1 + dn * Ac * R * F_aif/( 1+alpha*Ac) ) * N;
+dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D) * F_aif / ( 1 + (Knn * C5a * N + Kna * A + Knd * D) * F_aif )  - mun * 1/(1+C5a/C5astar) *( 1 + dn * Ac * R * F_aif/( 1+alpha*Ac) ) * N;
 
 % Macrophages
 dM_dt = Km * (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif / ( 1 + (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif ) - mum * ( 1 + dm * Ac * R * F_aif/(1+alpha*Ac) ) * M;
