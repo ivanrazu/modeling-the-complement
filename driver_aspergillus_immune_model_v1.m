@@ -2,13 +2,13 @@ clear
 
 % Define parameters
 
-Kac =0.7;      
+Kac =0.54;      
 Acmax = 1e5;    
-dacm = 0.05;     
-dacn = 0.4;   
-Kah = 0.54;
+dacm = 0.05*5;     
+dacn = 0.4*1.3;   
+Kah = 0.6;
 Ahmax = 1e5;
-dahn =1.2;
+dahn =5;
 Kc5a = 0.09;
 Aifstar=3.5;
 muc5a=0.1;
@@ -45,7 +45,7 @@ drn=2e-5;
 
 Kd=4;
 alpha=2.5;
-beta=2;
+beta=0.5;
 
 Kna= 0.04;
 Kma = 0.04;
@@ -67,8 +67,8 @@ gamma= 0.5;
 C5astar=0.25;
 
 
-Ac0=1e0*2;
-Ah0=0;
+Ac0=1e0*1.2;
+Ah0=1;
 C5a0=0;
 N0=1e1*0;
 M0=1e1*0;
@@ -88,10 +88,10 @@ initial_conditions = [Ac0,Ah0,C5a0,N0,M0,R0,Aif0,D0];
 tspan = [0, 50];
 
 % Call solver
-sol = ode23s(@aspergillus_immune_model_v1, tspan, initial_conditions, [], params);
+sol = ode15s(@aspergillus_immune_model_v1, tspan, initial_conditions, [], params);
 
 % Time points for which to evaluate the solution
-t_eval = (0:0.01:tspan(2));
+t_eval = (0:0.1:tspan(2));
 
 % Evaluate solution
 Ys = deval(sol, t_eval);
@@ -121,8 +121,8 @@ hold on
 plot(t_eval,Ac, 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
 hold on;
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{2});
-xlim([0,15])
-ylim([0,10])
+% xlim([0,15])
+% ylim([0,4])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
@@ -160,7 +160,7 @@ hold on
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,40])
+% ylim([0,40])
 xlim([0,tspan(end)])
 grid on;
 %%
@@ -170,7 +170,7 @@ plot(t_eval, Aif, 'LineWidth', 2, 'DisplayName', 'Aif','LineStyle',linestyle,'Co
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,5])
+% ylim([0,5])
 xlim([0,tspan(end)])
 grid on;
 %%
@@ -180,13 +180,13 @@ plot(t_eval, D, 'LineWidth', 2, 'DisplayName', 'D','LineStyle',linestyle,'Color'
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,1])
+% ylim([0,1])
 xlim([0,tspan(end)])
 grid on;
 %%
-return
+% return
 % % Plots phagocytosis flux
-
+return
 F_aif = 1./(1+(Aif/Aifstar).^2) ;
 phagoc_M=dacm * F_aif  .* Ac .* M .* R./(1+alpha*Ac);
 
@@ -219,7 +219,7 @@ grid on;
 
 
 %%
-return
+% return
 
 Ndat = xlsread('Neutrophils_WT.xlsx','Sheet1', 'A14:E18');
 meanNdat = mean(Ndat);
@@ -234,10 +234,6 @@ CXCL2_dat = xlsread('CXCL2_WT.xlsx','Sheet1', 'A12:E16');
 meanCXCL2dat = mean(CXCL2_dat);
 sdCXCL2dat = std(CXCL2_dat);
 
-
-
-
-%%
 tscat = [0,12,24,48,72];
 
 
