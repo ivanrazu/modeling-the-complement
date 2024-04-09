@@ -5,24 +5,26 @@ clear
 dacm = 0.25*0.5;     
 dacn = 0.8*0.5;  
 alpha=2.5*0.5*0.5*0;
-Ks=0.03*10*5;
-dasm=0.01*0.5;
+Ks=0.03*10*5*0.5;
+dasm=0.038;%0.01*0.5;
 dasn=0.05*0.5;
 beta=0.5*0;
-Kah = 0.1*10*6*0.2;
-dah=0.2*10*3;
+Kah = 0.1*10*6*0.2*0.5;
+dah=0.8;
 gamma= 0.5*0.5*0;
 
-Kc5a = 0.09*5;
+Kc = 0.09*5;
 Kca = 0.04*4;
 Kch=0.003*5;
 muc5a=0.1;
 
-Kn = 3.6480*1.2;
+Kn = 3.6480*1.2;%*0.1;
 Knn=0.4640*4;
 Kna= 0.04*2*2*2;
 Knd = 0.04*2*2;
 mun =1.03688*0.8;
+
+
 dnc =0.5;
 
 dns=0.1*5;
@@ -62,19 +64,19 @@ Aifstar=3.5;
 C5astar=0.25;
 
 
-Ac0=1e0*1;
+Ac0=7;
 As0=0;
 Ah0=0;
 C5a0=0;
 N0=1e1*0;
 M0=1e1*0;
-R0=0;
+R0=1;
 Aif0=sai/muai;
 D0=0;
 H0=0;
 
 params = [dacm,dacn,alpha,Ks,dasm,dasn,beta,Kah,dah,gamma,...
-          Kc5a,Kca,Kch,muc5a,Kn,Knn,Kna,Knd,mun,dnc...
+          Kc,Kca,Kch,muc5a,Kn,Knn,Kna,Knd,mun,dnc...
           dns,dnh,Km,Kmm,Kma,Kmd,mum,dmc,dms,Kr,...
           Krn,Krm,mur,drm,drn,sai,Kai,Kain,Kaim,Kaid,...
           muai,Kd,Kdr,Kdn,Kdh,mud,Kh,Khh,Khd,muh,...
@@ -124,24 +126,24 @@ hold on
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
 
 % xlim([0,15])
-ylim([0,1.5])
+ylim([0,7.5])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
 % ylim([0,500])
 grid on;
-%%
+
 subplot(rows,cols,2)
 hold on
 plot(t_eval, C5a, 'LineWidth', 2, 'DisplayName', 'C5a','LineStyle',linestyle,'Color',colors_vec{1});
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,0.07])
+ylim([0,0.2])
 xlim([0,tspan(end)])
 grid on;
 
-%%
+
 subplot(rows,cols,3)
 hold on
 plot(t_eval, M, 'LineWidth', 2, 'DisplayName', 'M','LineStyle',linestyle,'Color',colors_vec{1});
@@ -151,10 +153,10 @@ hold on
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,1])
+ylim([0,2.5])
 xlim([0,tspan(end)])
 grid on;
-%%
+
 subplot(rows,cols,4)
 hold on
 plot(t_eval, R, 'LineWidth', 2, 'DisplayName', 'R','LineStyle',linestyle,'Color',colors_vec{1});
@@ -165,17 +167,17 @@ legend('Location', 'Best');
 ylim([0,2.5])
 xlim([0,tspan(end)])
 grid on;
-%%
+
 subplot(rows,cols,5)
 hold on
 plot(t_eval, Aif, 'LineWidth', 2, 'DisplayName', 'Aif','LineStyle',linestyle,'Color',colors_vec{1});
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,1.5])
+ylim([0,2])
 xlim([0,tspan(end)])
 grid on;
-%%
+
 subplot(rows,cols,6)
 hold on
 plot(t_eval, D, 'LineWidth', 2, 'DisplayName', 'D','LineStyle',linestyle,'Color',colors_vec{1});
@@ -296,4 +298,23 @@ figure
 semilogx(x,fx)
 hold on
 xline(xstar,'r--')
+%%
+
+Nx=(0:0.1:30);
+Mx=(0:0.1:30);
+
+% f_ROS_N=Kr *(Krn*N)./(1+(Krn*N));
+f_ROS_N=Kr *(Krn*Nx)./(1+(Krn*Nx));
+% f_ROS_M = Kr *(Krm*M)./(1+(Krm*M));
+f_ROS_M = Kr *(Krm*Mx)./(1+(Krm*Mx));
+
+figure
+plot(Nx,f_ROS_N,'LineWidth', 2, 'DisplayName', 'ROS by N','LineStyle',linestyle,'Color',colors_vec{2})
+hold on
+plot(Mx,f_ROS_M,'LineWidth', 2, 'DisplayName', 'ROS by M','LineStyle','--','Color',colors_vec{1})
+xlabel('Time');
+legend('Location', 'Best');
+grid on;
+
+
 

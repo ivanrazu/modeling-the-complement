@@ -28,7 +28,7 @@ Kah = params(8);
 dah=params(9);
 gamma=params(10);
 
-Kc5a =params(11);
+Kc =params(11);
 Kca = params(12);
 Kch = params(13);
 muc5a = params(14);
@@ -91,7 +91,7 @@ dAh_dt = Kah * As  - dah * Ah * N * R * F_aif/(1+gamma*Ah);
 
 
 % C5a anaphalytoxin
-dC5a_dt = Kc5a * ( Kca * (As+Ah) + Kch * H) * F_aif/((1 + Kca * A + Kch * H)* F_aif)- muc5a * C5a;
+dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) * F_aif/((1 + Kca * (As+Ah) + Kch * H)* F_aif)- muc5a * C5a;
 
 % Neutrophilsig
 dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D) * F_aif / ( 1 + (Knn * C5a * N + Kna * A + Knd * D) * F_aif )  - mun *( 1 +  (dnc * Ac /( 1+alpha*Ac) + dns *As/( 1+beta*As) + dnh * Ah/( 1+gamma*Ah) ) * R * F_aif  * 1/(1+C5a/C5astar) ) * N;
@@ -100,7 +100,7 @@ dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D) * F_aif / ( 1 + (Knn * C5a * N 
 dM_dt = Km * (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif / ( 1 + (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif ) - mum * ( 1 + (dmc * Ac/(1+alpha*Ac) + dms * As/(1+beta*As) )* R * F_aif ) * M;
 
 % ROS
-dR_dt = Kr *(Krn*N+Krm*M)/(1+(Krn*N+Krm*M)) - mur*(1 +drm*M + drn*N)*R;
+dR_dt = 0*Kr *(Krn*N+Krm*M)/(1+(Krn*N+Krm*M)) - 0*mur*(1 +drm*M + drn*N)*R;
 
 % Ainti-inflammatory mediators
 dAif_dt = sai +  Kai*(Kain *N + Kaim * M + Kaid * D)*F_aif/( 1 + (Kain *N + Kaim * M + Kaid * D)*F_aif) - muai * Aif;
