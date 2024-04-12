@@ -2,81 +2,91 @@ clear
 
 % Define parameters
    
-dacm = 0.125;     
-dacn = 0.4;  
-Ks=0.75;
-dasm=0.038;
-dasn=0.2354;%0.025;
-Kah = 0.6931;%0.6;
-dah=0.7895;%0.8;
+dacm = 0.0430;     % according to Phillippe et al 2003
+dacn = 0.01;  
+Ks=2/3;
+
+
+dasm=0.4263; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
+dasn=0.2354; % according to Ewald 2021
+Kah = 0.6931*0.5; % according to Ewald 2021
+dah=0.7895*2e-3;  % according to Ewald 2021
 
 Kc = 0.45;
 Kca = 0.16;
-Kch=0.015;
-muc5a=0.1;
+Kch=0.015*10;
+muc5a=0.1*2;
 
-Kn = 4.3776;%0.3648
-Knn=1.856;
-Kna= 0.32;
-Knd = 0.16;
-mun =0.8295;
+Kn = 43.776*0.4;
+Knn=0.1856*0.4;
+Kna= 0.096;
+Knd = 0.3216;
 
+mun =0.0594; % according to Ewald 2021 
 
-dnc =0.5;
-dns=0.5;
-dnh=0.5;
-Km = 3.24;
+dnc =0.5475*2; % according to Ewald 2021 
+dns=0.5475*2;  % according to Ewald 2021 
+dnh=0.5475*2;  % according to Ewald 2021 
+
+Km = 3.24*4;
 Kmm=3.72;
-Kma = 0.04;  
-Kmd = 0.05;
-mum=0.7776;
-dmc = 0.02;
+Kma = 0.04*10;  
+Kmd = 0.05*10;
+mum=0.0798*1.4; % according to Ewald 2021 
+dmc = 0.0983; % so that mum*dmc = 0.0764 as estimated from literature in Ewald 2021
 dms=0.01;
 
-sai=0.05;
+sai=2.3232; % so that sai/muai = 10^(1.19) which is IL10-0 in Ambers' data
 Kai=4;
 Kain=0.02;
 Kaim=0.04;
 Kaid = 0.05;
 
-muai=0.15;
-Kd=4;
-Kdr=0.004;
-Kdn=0.0320;
-Kdh = 0.02;
-mud =1.2;
-Kh = 0.4;
-Khh=0.08;
-Khd = 0.12;
-muh=0.15;
+muai=0.15*1.5;
+
+Kd=1.7;
+Kdn=0.09*1e-1;
+Kdh = 0.01*1e-2*0.9;
+mud =1.9*1.2;
+Kh = 0.8;
+Khh=0.03;
+Khd = 0.03;
+muh=0.15*4;
    
-Aifstar=3.5;
-C5astar=0.25;
+Aifstar=70;
+C5astar=1.5;
 
+alphac=1e0;
+alphas=1e0;
+alphah=1;%2000;
 
-Ac0=1e0*7;
+% Ac0=7;
 As0=0;
 Ah0=0;
 C5a0=0;
-N0=0;
-M0=0*10^(4.96);
+% N0=0;
+% M0=0;
 Aif0=sai/muai;
 D0=0;
 H0=0;
 
 
-% M0=10^(4.96); accroding to Amber's data
+M0=10^(4.96)*0; %accroding to Amber's data
+Ac0=1e4;
+N0=10^(5.4)*0; %%accroding to Amber's data
+
+
 
 params = [dacm,dacn,Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,...
          muc5a,Kn,Knn,Kna,Knd,mun,dnc,dns,dnh,Km,...
          Kmm,Kma,Kmd,mum,dmc,dms,sai,Kai,Kain,Kaim,...
          Kaid,muai,Kd,Kdn,Kdh,mud,Kh,Khh,Khd,muh,...
-          Aifstar,C5astar];
+          Aifstar,C5astar,alphac,alphas,alphah];
 
 initial_conditions = [Ac0,As0,Ah0,C5a0,N0,M0,Aif0,D0,H0];
 
 % Time span
-tspan = [0, 20];
+tspan = [0, 500];
 
 % Call solver
 sol = ode15s(@aspergillus_immune_model_v3, tspan, initial_conditions, [], params);
@@ -306,5 +316,10 @@ xlabel('Time');
 legend('Location', 'Best');
 grid on;
 
-
-
+%%
+figure
+Ax=(0:1:10000);
+alphax=2000;
+f_Ax=Ax./(alphax+Ax);
+semilogx(Ax,f_Ax,'LineWidth', 2)
+xline(alphax,'r--','LineWidth', 2)
