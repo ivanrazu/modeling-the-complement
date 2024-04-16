@@ -2,21 +2,21 @@ clear
 
 % Define parameters
    
-dacm = 0.0430;     % according to Phillippe et al 2003
-dacn = 0.01*0.1;  
-Ks=1/3*5;
-dasm=0.4263; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
-dasn=0.2354; % according to Ewald 2021
-Kah = 0.6931; % according to Ewald 2021
+dacm = 0.0430*0.001;     % according to Phillippe et al 2003
+dacn = 1e-5;  
+Ks=1/3;
+dasm=0.4263*0.1; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
+dasn=0.2354*0.1; % according to Ewald 2021
+Kah = 0.6931*0.1; % according to Ewald 2021
 dah=0.7895*2e-3;  % according to Ewald 2021
-Kc = 0.45;
+Kc = 0.45*2;
 Kca = 0.16;
-Kch=0.015*10;
-muc5a=0.1*2;
+Kch=0.015*10*40;
+muc5a=0.1*4;
 Kn = 43.776*0.2;
-Knn=0.0019*0.5*0.2;
+Knn=0.0019*2;
 Kna= 0.096*0.2;
-Knd = 0.3216;
+Knd = 0.3216*0.1;
 mun =0.0594; % according to Ewald 2021 
 dnc =0.5475*2; % according to Ewald 2021 
 dns=0.5475*2;  % according to Ewald 2021 
@@ -34,13 +34,13 @@ Kaid = 0.05;
 muai=0.15*1.7;
 Kd=1.7;
 Kdn=0.09*1e-1*2;
-Kdh = 0.01*1e-2*0.7*0.1;
+Kdh = 0.01*1e-2*0.7*0.1*0.2;
 mud =1.9*1.2;
-Kh = 0.8;
-Khh=0.03;
+Kh = 0.2;
+Khh=0.01;
 Khd = 0.03;
-muh=0.15*4;
-Aifstar=80;
+muh=0.15*6;
+Aifstar=50;
 
 Kn=Kn*0.1;
 
@@ -68,7 +68,7 @@ params = [dacm,dacn,Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,...
 initial_conditions = [Ac0,As0,Ah0,C5a0,N0,M0,Aif0,D0,H0];
 
 % Time span
-tspan = [0, 500];
+tspan = [0, 20];
 
 % Call solver
 sol = ode15s(@aspergillus_immune_model_v4, tspan, initial_conditions, [], params);
@@ -107,7 +107,7 @@ plot(t_eval,As, 'LineWidth', 2, 'DisplayName', 'As','LineStyle',linestyle,'Color
 hold on
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
 
-xlim([0,500])
+xlim([0,20])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
@@ -155,7 +155,7 @@ plot(t_eval, Aif, 'LineWidth', 2, 'DisplayName', 'Aif','LineStyle',linestyle,'Co
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,25])
+% ylim([0,25])
 xlim([0,tspan(end)])
 grid on;
 

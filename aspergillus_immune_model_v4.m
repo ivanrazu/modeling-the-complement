@@ -71,7 +71,8 @@ dAs_dt = Ks * Ac  - (dasm * M + dasn * N) * As * F_aif - Kah * As;
 dAh_dt = Kah * As  - dah * Ah * N * F_aif; 
 
 % C5a anaphalytoxin
-dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) * F_aif/((1 + Kca * (As+Ah) + Kch * H)* F_aif)- muc5a * C5a;
+% dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) * F_aif/((1 + Kca * (As+Ah) + Kch * H)* F_aif)- muc5a*(1+0.05*N+0.03*M) * C5a;
+dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H)* F_aif /((1000 + (Kca * (As+Ah) + Kch * H))* F_aif)- muc5a*(1+1.2*N+1.1*M) * C5a;
 
 % Neutrophilsig
 dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D)* F_aif  / ( 1 + (Knn * C5a * N + Kna * A + Knd * D)* F_aif  )  - mun * N;
@@ -84,10 +85,10 @@ dM_dt = Km * (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif / ( 1 + (Kmm * C5a * M 
 dAif_dt = sai +  Kai*(Kain *N + Kaim * M + Kaid * D)*F_aif/( 1 + (Kain *N + Kaim * M + Kaid * D)*F_aif) - muai * Aif;
 
 % Tissue damage
-dD_dt = Kd*(Kdn * N + Kdh * Ah)/( 1 + ( Kdn * N + Kdh * Ah)) - mud*D;
+dD_dt = Kd*(Kdn * N + Kdh * Ah)/( 10 + ( Kdn * N + Kdh * Ah)) - mud*D;
 
 % Heme
-dH_dt = Kh * (Khh *Ah + Khd * D)/(1+(Khh *Ah + Khd * D)) - muh * H;
+dH_dt = Kh * (Khh *Ah + Khd * D)/(200+(Khh *Ah + Khd * D)) - muh * H;
 
 dydt = [dAc_dt,dAs_dt,dAh_dt,dC5a_dt,dN_dt, dM_dt,dAif_dt,dD_dt, dH_dt]';
 
