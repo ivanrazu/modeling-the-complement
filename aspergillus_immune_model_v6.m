@@ -16,48 +16,49 @@ H = y(9);
 A = Ac + As + Ah ;
 
 % Defining model parameters
-dacm = params(1);      
-dacn = params(2);    
-Ks = params(3);     
-dasm =params(4);
-dasn = params(5);
-Kah = params(6);
-dah=params(7);
-Kc =params(8);
-Kca = params(9);
-Kch = params(10);
+  
+Ks = params(1);     
+dasm =params(2);
+dasn = params(3);
+Kah = params(4);
+dah=params(5);
+Kc =params(6);
+Kca = params(7);
+Kch = params(8);
 
-muc5a = params(11);
-Kn=params(12);
-Knn=params(13);
-Kna=params(14);
-Knd =params(15);
-mun =params(16);
-Km=params(17);
-Kmm=params(18);
-Kma=params(19);
-Kmd=params(20);
+muc5a = params(9);
+Kn=params(10);
+Knn=params(11);
+Kna=params(12);
+Knd =params(13);
+mun =params(14);
+Km=params(15);
+Kmm=params(16);
+Kma=params(17);
+Kmd=params(18);
 
-mum=params(21);
-sai=params(22);
-Kai = params(23);
-Kain = params(24);
-Kaim = params(25);
-Kaid = params(26);
-muai = params(27);
-Kd=params(28);
-Kdn = params(29);
-Kdh = params(30);
+mum=params(19);
+sai=params(20);
+Kai = params(21);
+Kain = params(22);
+Kaim = params(23);
+Kaid = params(24);
+muai = params(25);
+Kd=params(26);
+Kdn = params(27);
+Kdh = params(28);
 
-mud = params(31);
-Kh = params(32);
-Khh=params(33);
-Khd=params(34);
-muh=params(35);
-Aifstar=params(36);
+mud = params(29);
+Kh = params(30);
+Khh=params(31);
+Khd=params(32);
+muh=params(33);
+Aifstar=params(34);
 
-mu=3;
-sigma=1;
+mu=params(35);
+sigma=params(36);
+Kcn=params(37);
+Kcm=params(38);
 
 % define f
 F_aif = 1/(1+(Aif/Aifstar)^2) ;
@@ -65,16 +66,17 @@ F_aif = 1/(1+(Aif/Aifstar)^2) ;
 % Differential Equations
 
 % Asperg. conidia
-dAc_dt =  - (dacm *  M * + dacn * N )*  Ac *  F_aif- Ks*1/sqrt(2*pi*sigma^2)*exp(-(t-mu)^2/(2*sigma^2));
+% dAc_dt =  - (dacm *  M * + dacn * N )*  Ac *  F_aif- Ks*1/sqrt(2*pi*sigma^2)*exp(-(t-mu)^2/(2*sigma^2));
+dAc_dt =  - Ks*1/sqrt(2*pi*sigma^2)*exp(-(t-mu)^2/(2*sigma^2));
 
 % Asperg. swollen conidia
-dAs_dt = Ks*1/sqrt(2*pi*sigma^2)*exp(-(t-mu)^2/(2*sigma^2))  - (dasm * M + dasn * N) * As * F_aif - As/sqrt(2*pi*sigma^2)*exp(-(t-(mu+4))^2/(2*sigma^2)) ;
+dAs_dt = Ks*1/sqrt(2*pi*sigma^2)*exp(-(t-mu)^2/(2*sigma^2))  - (dasm * M + dasn * N) * As * F_aif -As/sqrt(2*pi*sigma^2)*exp(-(t-(mu+4))^2/(2*sigma^2)) ;
 
 % Asperg. hyphae
 dAh_dt =  As/sqrt(2*pi*sigma^2)*exp(-(t-(mu+4))^2/(2*sigma^2)) + Kah *As  - dah * Ah * N * F_aif; 
 
 % C5a anaphalytoxin
-dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H)* F_aif /((1 + (Kca * (As+Ah) + Kch * H))* F_aif)- muc5a*(1+0.8*N+0.8*M) * C5a;
+dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H)* F_aif /((1 + (Kca * (As+Ah) + Kch * H))* F_aif)- muc5a*(1+Kcn*N+Kcm*M) * C5a;
 
 % Neutrophilsig
 dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D)* F_aif  / ( 1 + (Knn * C5a * N + Kna * A + Knd * D)* F_aif  )  - mun * N;

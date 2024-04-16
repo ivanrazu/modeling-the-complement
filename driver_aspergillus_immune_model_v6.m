@@ -2,49 +2,54 @@ clear
 
 % Define parameters
    
-dacm = 0.0430*0.001*0;     % according to Phillippe et al 2003
-dacn = 1e-5*0;  
-Ks=10^6;
-dasm=0.4263*0.1; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
-dasn=0.2354*0.1; % according to Ewald 2021
+% dacm = 0.0430*0.001*0;     % according to Phillippe et al 2003
+% dacn = 1e-5*0;  
+Ks=10^7;
+dasm=0.4263; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
+dasn=0.2354; % according to Ewald 2021
 Kah = 0.6931; % according to Ewald 2021
 dah=0.7895;  % according to Ewald 2021
-Kc = 0.45*1000*10;
-Kca = 0.16*0.00001;
+Kc = 4500;
+Kca = 1.6e-6;
 Kch=0.015;
-muc5a=0.1*8*2;
-Kn = 43.776*2;
-Knn=0.0019;
-Kna= 9.6e-5;
-Knd = 1.608e-4;
-mun =0.0594*10*2; % according to Ewald 2021 
-dnc =0.5475*2; % according to Ewald 2021 
-dns=0.5475*2;  % according to Ewald 2021 
-dnh=0.5475*2;  % according to Ewald 2021 
+muc5a=1.6;
+Kn = 87.552*0.1*0.5;
+Knn=0.0019*0.1*2.2e-3;
+Kna= 9.6e-5*2*2.2e-3;
+Knd = 1.608e-4*0.5*2.2e-3;
+mun =0.0594; % according to Ewald 2021 
+% dnc =0.5475; % according to Ewald 2021 
+% dns=0.5475;  % according to Ewald 2021 
+% dnh=0.5475;  % according to Ewald 2021 
 Km = 3.24;
-Kmm=3.72e-04;
-Kma = 1e-5;  
-Kmd = 2.5e-5;
+Kmm=3.72e-04*0.1;
+Kma = 1e-5*0.1;  
+Kmd = 2.5e-5*0.1;
 mum=0.0798; % according to Ewald 2021 
 sai=2.3232; % so that sai/muai = 10^(1.19) which is IL10-0 in Ambers' data
 Kai=4;
 Kain=0.02;
 Kaim=0.04;
 Kaid = 0.05;
-muai=0.15*1.7;
+muai=0.255;
 Kd=1.7;
 Kdn=0.0018;
 Kdh = 1.4e-7;
 mud =2.28;
 Kh = 0.2;
-Khh=1e-4;
+Khh=1e-4*0.6;
 Khd = 3e-4;
-muh=0.9;
+muh=0.7;
 Aifstar=80;
 
-% Kn=Kn*0.1;
+mu=3;
+sigma=1;
+Kcn=0.8;
+Kcm=0.8;
 
-Ac0=1e6;
+% Kn=Kn*0.02;
+
+Ac0=1e7;
 As0=0;
 Ah0=0;
 C5a0=0;
@@ -60,15 +65,15 @@ H0=0;
 
 
 
-params = [dacm,dacn,Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,...
+params = [Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,...
          muc5a,Kn,Knn,Kna,Knd,mun,Km,Kmm,Kma,Kmd,...
          mum,sai,Kai,Kain,Kaim,Kaid,muai,Kd,Kdn,Kdh,...
-         mud,Kh,Khh,Khd,muh,Aifstar];
+         mud,Kh,Khh,Khd,muh,Aifstar,mu,sigma,Kcn,Kcm];
 
 initial_conditions = [Ac0,As0,Ah0,C5a0,N0,M0,Aif0,D0,H0];
 
 % Time span
-tspan = [0,  20];
+tspan = [0,  50];
 
 % Call solver
 sol = ode15s(@aspergillus_immune_model_v6, tspan, initial_conditions, [], params);
@@ -111,7 +116,7 @@ xlim([0,tspan(end)])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
-ylim([0,1e6])
+ylim([0,1e7])
 grid on;
 
 subplot(rows,cols,2)
@@ -134,7 +139,7 @@ hold on
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-ylim([0,150])
+% ylim([0,150])
 xlim([0,tspan(end)])
 grid on;
 
@@ -172,21 +177,21 @@ legend('Location', 'Best');
 xlim([0,tspan(end)])
 grid on;
 
-
-subplot(rows,cols,6)
-hold on
-plot(t_eval,log10(Ac), 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
-hold on;
-plot(t_eval,log10(As), 'LineWidth', 2, 'DisplayName', 'As','LineStyle',linestyle,'Color',colors_vec{2});
-hold on
-plot(t_eval,log10(Ah), 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
-
-xlim([0,tspan(end)])
-xlabel('Time');
-ylabel('Concentration');
-legend('Location', 'northeast');
-% ylim([0,1e6])
-grid on;
+% 
+% subplot(rows,cols,6)
+% hold on
+% plot(t_eval,log10(Ac), 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
+% hold on;
+% plot(t_eval,log10(As), 'LineWidth', 2, 'DisplayName', 'As','LineStyle',linestyle,'Color',colors_vec{2});
+% hold on
+% plot(t_eval,log10(Ah), 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
+% 
+% xlim([0,tspan(end)])
+% xlabel('Time');
+% ylabel('Concentration');
+% legend('Location', 'northeast');
+% % ylim([0,1e6])
+% grid on;
 
 return
 
