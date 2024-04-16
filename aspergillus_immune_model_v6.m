@@ -74,14 +74,13 @@ dAs_dt = Ks*1/sqrt(2*pi*sigma^2)*exp(-(t-mu)^2/(2*sigma^2))  - (dasm * M + dasn 
 dAh_dt =  As/sqrt(2*pi*sigma^2)*exp(-(t-(mu+4))^2/(2*sigma^2)) + Kah *As  - dah * Ah * N * F_aif; 
 
 % C5a anaphalytoxin
-% dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) * F_aif/((1 + Kca * (As+Ah) + Kch * H)* F_aif)- muc5a*(1+0.05*N+0.03*M) * C5a;
 dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H)* F_aif /((1 + (Kca * (As+Ah) + Kch * H))* F_aif)- muc5a*(1+0.8*N+0.8*M) * C5a;
 
 % Neutrophilsig
-dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D)* F_aif  / ( 500 + (Knn * C5a * N + Kna * A + Knd * D)* F_aif  )  - mun * N;
+dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D)* F_aif  / ( 1 + (Knn * C5a * N + Kna * A + Knd * D)* F_aif  )  - mun * N;
 
 % Macrophages
-dM_dt = Km * (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif / ( 100 + (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif ) - mum  * M;
+dM_dt = Km * (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif / ( 1 + (Kmm * C5a * M + Kma * A + Kmd * D) * F_aif ) - mum  * M;
 
 
 % Ainti-inflammatory mediators

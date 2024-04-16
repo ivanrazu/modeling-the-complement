@@ -2,29 +2,29 @@ clear
 
 % Define parameters
    
-dacm = 0.0430*0.001;     % according to Phillippe et al 2003
-dacn = 1e-5;  
+dacm = 0.0430*0.001*0;     % according to Phillippe et al 2003
+dacn = 1e-5*0;  
 Ks=10^6;
 dasm=0.4263*0.1; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
 dasn=0.2354*0.1; % according to Ewald 2021
 Kah = 0.6931; % according to Ewald 2021
-dah=0.7895*2e-3;  % according to Ewald 2021
+dah=0.7895;  % according to Ewald 2021
 Kc = 0.45*1000*10;
 Kca = 0.16*0.00001;
-Kch=0.015*10*40*2*0;
+Kch=0.015;
 muc5a=0.1*8*2;
 Kn = 43.776*2;
-Knn=0.0019*2*10;
-Kna= 0.096*0.2*0.1;
-Knd = 0.3216*0.1*0.1;
+Knn=0.0019;
+Kna= 9.6e-5;
+Knd = 1.608e-4;
 mun =0.0594*10*2; % according to Ewald 2021 
 dnc =0.5475*2; % according to Ewald 2021 
 dns=0.5475*2;  % according to Ewald 2021 
 dnh=0.5475*2;  % according to Ewald 2021 
 Km = 3.24;
-Kmm=3.72*0.1*0.1*0.5;
-Kma = 0.04*10*0.5*0.5*0.5*0.1;  
-Kmd = 0.05*10*0.5*0.01;
+Kmm=3.72e-04;
+Kma = 1e-5;  
+Kmd = 2.5e-5;
 mum=0.0798; % according to Ewald 2021 
 sai=2.3232; % so that sai/muai = 10^(1.19) which is IL10-0 in Ambers' data
 Kai=4;
@@ -33,14 +33,14 @@ Kaim=0.04;
 Kaid = 0.05;
 muai=0.15*1.7;
 Kd=1.7;
-Kdn=0.09*1e-1*2*0.1;
-Kdh = 0.01*1e-2*0.7*0.1*0.2*0.1;
-mud =1.9*1.2;
+Kdn=0.0018;
+Kdh = 1.4e-7;
+mud =2.28;
 Kh = 0.2;
-Khh=0.01*0.01;
-Khd = 0.03*0.01;
-muh=0.15*6;
-Aifstar=50;
+Khh=1e-4;
+Khd = 3e-4;
+muh=0.9;
+Aifstar=80;
 
 % Kn=Kn*0.1;
 
@@ -68,7 +68,7 @@ params = [dacm,dacn,Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,...
 initial_conditions = [Ac0,As0,Ah0,C5a0,N0,M0,Aif0,D0,H0];
 
 % Time span
-tspan = [0, 100];
+tspan = [0,  20];
 
 % Call solver
 sol = ode15s(@aspergillus_immune_model_v6, tspan, initial_conditions, [], params);
@@ -107,7 +107,7 @@ plot(t_eval,As, 'LineWidth', 2, 'DisplayName', 'As','LineStyle',linestyle,'Color
 hold on
 plot(t_eval,Ah, 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
 
-% xlim([0,20])
+xlim([0,tspan(end)])
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'northeast');
@@ -170,6 +170,22 @@ ylabel('Concentration');
 legend('Location', 'Best');
 % ylim([0,0.5])
 xlim([0,tspan(end)])
+grid on;
+
+
+subplot(rows,cols,6)
+hold on
+plot(t_eval,log10(Ac), 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
+hold on;
+plot(t_eval,log10(As), 'LineWidth', 2, 'DisplayName', 'As','LineStyle',linestyle,'Color',colors_vec{2});
+hold on
+plot(t_eval,log10(Ah), 'LineWidth', 2, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
+
+xlim([0,tspan(end)])
+xlabel('Time');
+ylabel('Concentration');
+legend('Location', 'northeast');
+% ylim([0,1e6])
 grid on;
 
 return
