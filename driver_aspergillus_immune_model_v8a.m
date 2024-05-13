@@ -11,20 +11,20 @@ Kah = 0.6931*0.1; % according to Ewald 2021
 dah=0.7895*0.1;  % according to Ewald 2021
 
 Kc = 45;
-Kca = 1.6e-2;
-Kch=0.015*10;
-muc5a=0.5*0.1*0.8*2;
+Kca = 1.6e-2*0.1*0.1*0.1*0.1*0.1; % lowering Kca shortens time of spike
+Kch=0.015*0.1;
+muc5a=0.5*0.1*0.8*2*3;
 
 Kn = 4.3776*2*20;
 Knn= 4.18e-7*5*1;
 Kna= 4.2240e-7*5*100*200;
-Knd =  1.7688e-7*10000;
+Knd =  1.7688e-7*1000;
 mun =0.0594*3; % according to Ewald 2021 
 
 Km = 3.24*40;
 Kmm=3.72e-06*1;
 Kma = 1e-6*10*20000;  
-Kmd = 2.5e-6*10*100;
+Kmd = 2.5e-6*10*10;
 mum=0.0798*3; % according to Ewald 2021 
 
 Kd=1.7*2*100;
@@ -55,9 +55,9 @@ rh = 1e-1*0.5;
 Ahmax = 1e4;
 
 
-Kn=Kn*0.01;
+% Kn=Kn*0.01;
 
-Ac0=1e5;
+Ac0=1e7;
 As0=0;
 Ah0=0;
 C5a0=0;
@@ -80,7 +80,7 @@ params = [Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,muc5a,Kn,...
 initial_conditions = [Ac0,As0,Ah0,C5a0,N0,M0,D0,H0];
 
 % Time span
-tspan = [0, 300];
+tspan = [0, 500];
 
 % Call solver
 sol = ode23s(@aspergillus_immune_model_v8a, tspan, initial_conditions, [], params);
@@ -130,7 +130,7 @@ legend('Location', 'northeast');
 % grid on;
 set(gca,'linewidth',linewidth-2)
 box on;
-yline(Kac,'--')
+% yline(Kac,'--')
 %%
 % figure
 subplot(rows,cols,2)
@@ -143,8 +143,8 @@ plot(t_eval,log10(Ah), 'LineWidth', linewidth, 'DisplayName', 'Ah','LineStyle',l
 xlim([0,tspan(end)])
 xlabel('Time');
 ylabel('log10(Concentration)');
-legend('Location', 'northeast');
-ylim([-2,7])
+legend('Location', 'Best');
+ylim([-0.5,7])
 % grid on;
 set(gca,'linewidth',linewidth-2)
 box on;
@@ -202,8 +202,20 @@ box on;
 subplot(rows,cols,5)
 hold on
 plot(t_eval, D, 'LineWidth', linewidth, 'DisplayName', 'D','LineStyle',linestyle,'Color',colors_vec{1});
+xlabel('Time');
+ylabel('Concentration');
+legend('Location', 'Best');
+% ylim([0,300])
+xlim([0,tspan(end)])
+% grid on;
+box on;
+
+fontsize(16,"points")
+set(gca,'linewidth',linewidth-2)
+
+subplot(rows,cols,6)
 hold on
-plot(t_eval, H, 'LineWidth', linewidth, 'DisplayName', 'H','LineStyle',linestyle,'Color',colors_vec{2});
+plot(t_eval, H, 'LineWidth', linewidth, 'DisplayName', 'H','LineStyle',linestyle,'Color',colors_vec{1});
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
@@ -216,6 +228,7 @@ fontsize(16,"points")
 set(gca,'linewidth',linewidth-2)
 
 %%
+return
 % figure
 % xSize = 2*12; X=xSize; ySize = 1*8;xLeft = (xSize-xSize)/2; Y=ySize; yTop = (ySize-ySize)/2;
 % set(gcf,'PaperPosition',[xLeft yTop xSize ySize]);
