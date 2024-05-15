@@ -2,13 +2,13 @@ clear
 
 % Define parameters
    
-dacm = 0.430*2;     % according to Phillippe et al 2003
+% dacm = 0.430*2;     % according to Phillippe et al 2003
 dacn = 1e-1*2;  
-Ks=1e-2*14*1e-2;
-dasm=0.4263*2; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
-dasn=0.2354*2; % according to Ewald 2021
-Kah = 0.6931*0.1; % according to Ewald 2021
-dah=0.7895*0.1;  % according to Ewald 2021
+% Ks=1e-2*14*1e-2;
+% dasm=0.4263*2; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
+% dasn=0.2354*2; % according to Ewald 2021
+% Kah = 0.6931*0.1; % according to Ewald 2021
+% dah=0.7895*0.1;  % according to Ewald 2021
 
 Kc = 45;
 Kca = 1.6e-2*0.1*0.1*0.1*0.1*0.1; % lowering Kca shortens time of spike
@@ -19,13 +19,13 @@ Kn = 4.3776*2*20;
 Knn= 4.18e-7*5*1;
 Kna= 4.2240e-7*5*100*200;
 Knd =  1.7688e-7*1000;
-mun =0.0594*3; % according to Ewald 2021 
+mun =0.0594; % according to Ewald 2021 
 
 Km = 3.24*40;
 Kmm=3.72e-06*1;
 Kma = 1e-6*10*20000;  
 Kmd = 2.5e-6*10*10;
-mum=0.0798*3; % according to Ewald 2021 
+mum=0.0798; % according to Ewald 2021 
 
 Kd=1.7*2*100;
 Kdn=0.0018*0.1;
@@ -37,7 +37,7 @@ Khd = 3e-4;
 muh=0.7*0.6;
 Kcn=1e-4;
 Kcm=1e-4;
-KH=1e-2*2;
+KH=1e-2;
 
 Ks=0.08; 
 dasn=0.06*2*0.1*0.1*0.5*0.5;
@@ -52,12 +52,11 @@ Kahs = 1e1*0.1*0.5;
 Khs = 1e2*0.25;
 
 rh = 1e-1*0.5;
-Ahmax = 1e4;
+Ahmax = 1e5;
+alpha=1e2;
 
 
-% Kn=Kn*0.01;
-
-Ac0=1e7;
+Ac0=1e6;
 As0=0;
 Ah0=0;
 C5a0=0;
@@ -69,10 +68,33 @@ H0=0;
 % Ks=1e1;
 % Ks=Ac0;
 
-% M0=10^(4.96); %accroding to Amber's data
-% N0=10^(5.4); %%accroding to Amber's data
+M_bs=10^(4.96); %accroding to Amber's data
+N_bs=10^(5.4); %%accroding to Amber's data
 
-params = [Ks,dasm,dasn,Kah,dah,Kc,Kca,Kch,muc5a,Kn,...
+
+% M_bs=0.3*10^6 ; %accroding to Tanaka et al 2015
+% N_bs=150*10^6 ; %%accroding to Tanaka et al 2015
+
+
+Kn=Kn*1e2;
+Km=Km*1e2;
+
+dasm=dasm*1e-2;
+dasn=dasn*1e-2;
+dah=dah*1e-2;
+Kcn=Kcn*1e-2;
+Kcm=Kcm*1e-2;
+knn=Knn*1e-2;
+Kmm=Kmm*1e-2;
+Kdn=Kdn*1e-2;
+% mun=mun*1e-2;
+% mum=mum*1e-2;
+
+Kn=Kn*0.01;
+
+
+
+params = [Ks,dasm,dasn,alpha,dah,Kc,Kca,Kch,muc5a,Kn,...
          Knn,Kna,Knd,mun,Km,Kmm,Kma,Kmd,mum,Kd,...
          Kdn,Kdh,mud,Kh,Khh,Khd,muh,Kcn,Kcm,KH,...
          Kas, Kac, Kahs, Khs, rh, Ahmax];
@@ -108,32 +130,32 @@ rows=2;
 linestyle='-';
 linewidth = 4;
 
-colors_vec={"#0072BD","#D95319","#EDB120","#7E2F8E","#77AC30","#4DBEEE","#A2142F"};
+colors_vec={"#000000","#0072BD","#D95319","#EDB120","#7E2F8E","#77AC30","#4DBEEE","#A2142F"};
 %%
 figure
 % xSize = cols*10; X=xSize; ySize = rows*8;xLeft = (xSize-xSize)/2; Y=ySize; yTop = (ySize-ySize)/2;
 % set(gcf,'PaperPosition',[xLeft yTop xSize ySize]);
 % set(gcf,'Position',[100 25 xSize*50 ySize*55]);
-
-subplot(rows,cols,1)
-hold on
-% plot(t_eval,Ac, 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
-hold on;
-plot(t_eval,As, 'LineWidth', linewidth, 'DisplayName', 'As','LineStyle',linestyle,'Color',colors_vec{2});
-hold on
-plot(t_eval,Ah, 'LineWidth', linewidth, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
-xlim([0,tspan(end)])
-xlabel('Time');
-ylabel('Concentration');
-legend('Location', 'northeast');
-% ylim([0,1e4])
-% grid on;
-set(gca,'linewidth',linewidth-2)
-box on;
-% yline(Kac,'--')
+% 
+% subplot(rows,cols,1)
+% hold on
+% % plot(t_eval,Ac, 'LineWidth', 2, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
+% hold on;
+% plot(t_eval,As, 'LineWidth', linewidth, 'DisplayName', 'As','LineStyle',linestyle,'Color',colors_vec{2});
+% hold on
+% plot(t_eval,Ah, 'LineWidth', linewidth, 'DisplayName', 'Ah','LineStyle',linestyle,'Color',colors_vec{3});
+% xlim([0,tspan(end)])
+% xlabel('Time');
+% ylabel('Concentration');
+% legend('Location', 'northeast');
+% ylim([0,6e6])
+% % grid on;
+% set(gca,'linewidth',linewidth-2)
+% box on;
+% % yline(Kac,'--')
 %%
 % figure
-subplot(rows,cols,2)
+subplot(rows,cols,1)
 hold on
 plot(t_eval,log10(Ac), 'LineWidth', linewidth, 'DisplayName', 'Ac','LineStyle',linestyle,'Color',colors_vec{1});
 hold on;
@@ -148,56 +170,47 @@ ylim([-0.5,7])
 % grid on;
 set(gca,'linewidth',linewidth-2)
 box on;
-%%
-% cols=2;
-% rows=2;
-% figure
+
+subplot(rows,cols,2)
+hold on
+plot(t_eval, log10(M+M_bs), 'LineWidth', linewidth, 'DisplayName', 'M','LineStyle',linestyle,'Color',colors_vec{1});
+hold on
+xlabel('Time');
+ylabel('Concentration');
+legend('Location', 'Best');
+ylim([log10(M_bs),6])
+xlim([0,tspan(end)])
+ylabel('log10(Concentration)');
+set(gca,'linewidth',linewidth-2)
+box on;
+
 subplot(rows,cols,3)
+hold on
+plot(t_eval, log10(N+N_bs), 'LineWidth', linewidth, 'DisplayName', 'N','LineStyle',linestyle,'Color',colors_vec{1});
+hold on
+xlabel('Time');
+ylabel('Concentration');
+legend('Location', 'Best');
+ylim([log10(N_bs),6])
+xlim([0,tspan(end)])
+ylabel('log10(Concentration)');
+set(gca,'linewidth',linewidth-2)
+box on;
+fontsize(16,"points")
+set(gca,'linewidth',linewidth-2)
+
+subplot(rows,cols,4)
 hold on
 plot(t_eval, C5a, 'LineWidth', linewidth, 'DisplayName', 'C5a','LineStyle',linestyle,'Color',colors_vec{1});
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-% ylim([0,20])
+ylim([0,45])
 xlim([0,tspan(end)])
 % grid on;
 set(gca,'linewidth',linewidth-2)
 box on;
 
-subplot(rows,cols,4)
-hold on
-plot(t_eval, M, 'LineWidth', linewidth, 'DisplayName', 'M','LineStyle',linestyle,'Color',colors_vec{1});
-hold on
-plot(t_eval, N, 'LineWidth', linewidth, 'DisplayName', 'N','LineStyle',linestyle,'Color',colors_vec{2});
-hold on
-xlabel('Time');
-ylabel('Concentration');
-legend('Location', 'Best');
-% ylim([0,80])
-xlim([0,tspan(end)])
-% grid on;
-set(gca,'linewidth',linewidth-2)
-box on;
-% subplot(rows,cols,4)
-% hold on
-% plot(t_eval, R, 'LineWidth', 2, 'DisplayName', 'R','LineStyle',linestyle,'Color',colors_vec{1});
-% hold on
-% xlabel('Time');
-% ylabel('Concentration');
-% legend('Location', 'Best');
-% ylim([0,2.5])
-% xlim([0,tspan(end)])
-% grid on;
-
-% subplot(rows,cols,5)
-% hold on
-% plot(t_eval, Aif, 'LineWidth', 2, 'DisplayName', 'Aif','LineStyle',linestyle,'Color',colors_vec{1});
-% xlabel('Time');
-% ylabel('Concentration');
-% legend('Location', 'Best');
-% ylim([9,20])
-% xlim([0,tspan(end)])
-% grid on;
 
 subplot(rows,cols,5)
 hold on
@@ -205,11 +218,10 @@ plot(t_eval, D, 'LineWidth', linewidth, 'DisplayName', 'D','LineStyle',linestyle
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-% ylim([0,300])
+ylim([0,1.2e3])
 xlim([0,tspan(end)])
 % grid on;
 box on;
-
 fontsize(16,"points")
 set(gca,'linewidth',linewidth-2)
 
@@ -219,22 +231,23 @@ plot(t_eval, H, 'LineWidth', linewidth, 'DisplayName', 'H','LineStyle',linestyle
 xlabel('Time');
 ylabel('Concentration');
 legend('Location', 'Best');
-% ylim([0,300])
+ylim([0,1e2])
 xlim([0,tspan(end)])
 % grid on;
 box on;
-
 fontsize(16,"points")
 set(gca,'linewidth',linewidth-2)
 
+
+
 %%
 return
-% figure
-% xSize = 2*12; X=xSize; ySize = 1*8;xLeft = (xSize-xSize)/2; Y=ySize; yTop = (ySize-ySize)/2;
-% set(gcf,'PaperPosition',[xLeft yTop xSize ySize]);
-% set(gcf,'Position',[100 25 xSize*50 ySize*55]);
+figure
+xSize = 2*12; X=xSize; ySize = 1*8;xLeft = (xSize-xSize)/2; Y=ySize; yTop = (ySize-ySize)/2;
+set(gcf,'PaperPosition',[xLeft yTop xSize ySize]);
+set(gcf,'Position',[100 25 xSize*50 ySize*55]);
 
-subplot(rows,cols,6)
+subplot(1,2,1)
 Ax=(0:1:Ac0);
 % Kac=0.1*Kac;
 
@@ -249,17 +262,17 @@ xticklabels({'0','10^1','10^2','10^3','10^4','10^5','10^6','10^7'})
 title('Rate of As')
 xlim([0,Ac0])
 
-% subplot(1,2,2)
-% Ax2=(0:1:Ac0);
-% f_Ax2=Kahs*Ax2./(Khs+Ax2);
-% semilogx(Ax,f_Ax2,'LineWidth', 2, 'DisplayName','Rate of Ah')
-% xline(Khs,'r--','LineWidth', 2)
-% legend('Kahs As /(Khs + As)','As=Khs')
-% legend('Location', 'Best');
-% fontsize(16,"points")
-% xticks([0,10,100,1e3,1e4,1e5])
-% xticklabels({'0','10^1','10^2','10^3','10^4','10^5'})
-% title('Rate of Ah')
+subplot(1,2,2)
+Ax2=(0:1:Ac0);
+f_Ax2=Kahs*Ax2./(Khs+Ax2);
+semilogx(Ax,f_Ax2,'LineWidth', 2, 'DisplayName','Rate of Ah')
+xline(Khs,'r--','LineWidth', 2)
+legend('Kahs As /(Khs + As)','As=Khs')
+legend('Location', 'Best');
+fontsize(16,"points")
+xticks([0,10,100,1e3,1e4,1e5, 1e6,1e7])
+xticklabels({'0','10^1','10^2','10^3','10^4','10^5','10^6','10^7'})
+title('Rate of Ah')
 
 %%
 

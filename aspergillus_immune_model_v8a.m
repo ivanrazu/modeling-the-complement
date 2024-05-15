@@ -19,7 +19,7 @@ A = Ac + As + Ah ;
 Ks = params(1);     
 dasm =params(2);
 dasn = params(3);
-Kah = params(4);
+alpha = params(4);
 dah=params(5);
 Kc =params(6);
 Kca = params(7);
@@ -67,13 +67,13 @@ dAs_dt = Kas*Ac/(Kac+Ac) - (dasm * M + dasn * N) * As - Kahs *As/(Khs+As) ; % - 
 
 
 % Asperg. hyphae
-dAh_dt =  Kahs *As/(Khs+As) + rh* Ah*(1-Ah/Ahmax)  - dah * Ah/(1+1e2*Ah) * N ;
+dAh_dt =  Kahs *As/(Khs+As) + rh* Ah*(1-Ah/Ahmax)  - dah * Ah/(1+alpha*Ah) * N ;
 
 % dAh_dt =  Kahs *As/(Khs+As) + rh* Ah - 30*Ah/(1+0.1*Ah)  - dah * Ah * N ; 
 
 
 % C5a anaphalytoxin
-dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) /((1 + (Kca * (As+Ah) + Kch * H)))- 0*(Kcn*N+Kcm*M)*C5a  -  muc5a*C5a;
+dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) /((1 + (Kca * (As+Ah) + Kch * H)))- (Kcn*N+Kcm*M)*C5a  -  muc5a*C5a;
 
 % Neutrophilsig
 dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D)  / ( 1 + (Knn * C5a * N + Kna * A + Knd * D)  )  - mun * N;
