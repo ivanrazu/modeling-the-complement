@@ -3,60 +3,53 @@ clear
 % Define parameters
    
 % dacm = 0.430*2;     % according to Phillippe et al 2003
-dacn = 1e-1*2;  
+dacn = 2e-1  
 % Ks=1e-2*14*1e-2;
 % dasm=0.4263*2; % according to Ewald 2021   % 0.1099 according to Phillippe et al 2003
 % dasn=0.2354*2; % according to Ewald 2021
 % Kah = 0.6931*0.1; % according to Ewald 2021
 % dah=0.7895*0.1;  % according to Ewald 2021
 
-Kc = 45;
-Kca = 1.6e-2*0.1*0.1*0.1*0.1*0.1; % lowering Kca shortens time of spike
-Kch=0.015*0.1;
-muc5a=0.5*0.1*0.8*2*3;
-
-Kn = 4.3776*2*20;
-Knn= 4.18e-7*5*1;
-Kna= 4.2240e-7*5*100*200;
-Knd =  1.7688e-7*1000;
-mun =0.0594; % according to Ewald 2021 
-
-Km = 3.24*40;
-Kmm=3.72e-06*1;
-Kma = 1e-6*10*20000;  
-Kmd = 2.5e-6*10*10;
-mum=0.0798; % according to Ewald 2021 
-
-Kd=1.7*2*100;
-Kdn=0.0018*0.1;
+Kc = 45*40;
+Kca = 1.6e-7; % lowering Kca shortens time of spike
+Kch=0.015*0.1*0.1*0.1;
+muc5a = 0.24;
+Kn = 17510.4;
+Knn = 2.09e-08;
+Kna = 0.04224;
+Knd = 0.00017688;
+mun = 0.0594;
+Km = 12960;
+Kmm = 3.72e-08;
+Kma = 0.199;
+Kmd = 0.00025;
+mum = 0.0798;
+Kd = 340;
+Kdn = 1.8e-6;
 Kdh = 1.4e-5;
-mud =2.28*0.1;
-Kh = 0.2*2*100;
-Khh=1e-3*0.1;
+mud = 0.228;
+Kh = 40;
+Khh = 1e-4;
 Khd = 3e-4;
-muh=0.7*0.6;
-Kcn=1e-4;
-Kcm=1e-4;
-KH=1e-2;
-
-Ks=0.08; 
-dasn=0.06*2*0.1*0.1*0.5*0.5;
-dasm=0.002*0.1*0.1*0.5*0.5;
-Kah=0.005*10;
-dah=0.5*2;
-
-Kas = 2e3*2*13*2;
-Kac = 5e4*1.5*0.1*5;
-
-Kahs = 1e1*0.1*0.5;
-Khs = 1e2*0.25;
-
-rh = 1e-1*0.5;
+muh = 0.42;
+Kcn = 1e-6*8;
+Kcm = 1e-6*8;
+KH = 1e-2;
+Ks = 0.08;
+dasn = 3e-6;
+dasm = 5e-8;
+Kah = 0.05;
+dah = 1e-3;
+Kas = 52000;
+Kac = 375000;
+Kahs = 0.5;
+Khs = 25;
+rh = 0.05;
 Ahmax = 1e5;
-alpha=1e2;
+alpha = 1e2;
 
 
-Ac0=1e6;
+Ac0=1e7;
 As0=0;
 Ah0=0;
 C5a0=0;
@@ -65,8 +58,6 @@ M0=0;
 D0=0;
 H0=0;
 
-% Ks=1e1;
-% Ks=Ac0;
 
 M_bs=10^(4.96); %accroding to Amber's data
 N_bs=10^(5.4); %%accroding to Amber's data
@@ -76,22 +67,7 @@ N_bs=10^(5.4); %%accroding to Amber's data
 % N_bs=150*10^6 ; %%accroding to Tanaka et al 2015
 
 
-Kn=Kn*1e2;
-Km=Km*1e2;
-
-dasm=dasm*1e-2;
-dasn=dasn*1e-2;
-dah=dah*1e-2;
-Kcn=Kcn*1e-2;
-Kcm=Kcm*1e-2;
-knn=Knn*1e-2;
-Kmm=Kmm*1e-2;
-Kdn=Kdn*1e-2;
-% mun=mun*1e-2;
-% mum=mum*1e-2;
-
-Kn=Kn*0.01;
-
+Kn=Kn*0.1;
 
 
 params = [Ks,dasm,dasn,alpha,dah,Kc,Kca,Kch,muc5a,Kn,...
@@ -105,10 +81,11 @@ initial_conditions = [Ac0,As0,Ah0,C5a0,N0,M0,D0,H0];
 tspan = [0, 500];
 
 % Call solver
-sol = ode23s(@aspergillus_immune_model_v8a, tspan, initial_conditions, [], params);
+options = odeset('RelTol',1e-6,'AbsTol',1e-9);
+sol = ode23s(@aspergillus_immune_model_v8a, tspan, initial_conditions,[], params);
 
 % Time points for which to evaluate the solution
-t_eval = (0:0.01:tspan(2));
+t_eval = (0:0.005:tspan(2));
 
 % Evaluate solution
 Ys = deval(sol, t_eval);
@@ -241,7 +218,7 @@ set(gca,'linewidth',linewidth-2)
 
 
 %%
-return
+% return
 figure
 xSize = 2*12; X=xSize; ySize = 1*8;xLeft = (xSize-xSize)/2; Y=ySize; yTop = (ySize-ySize)/2;
 set(gcf,'PaperPosition',[xLeft yTop xSize ySize]);

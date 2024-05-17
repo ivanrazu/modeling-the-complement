@@ -60,7 +60,7 @@ Ahmax = params(36);
 % Differential Equations
 
 % Asperg. conidia
-dAc_dt =  - Ks*Ac; %- Kas*Ac/(Kac+Ac);
+dAc_dt =  -Kas*Ac/(Kac+Ac);% - Ks*Ac; %
 
 % Asperg. swollen conidia
 dAs_dt = Kas*Ac/(Kac+Ac) - (dasm * M + dasn * N) * As - Kahs *As/(Khs+As) ; % - 0*Kah*As ;
@@ -76,7 +76,7 @@ dAh_dt =  Kahs *As/(Khs+As) + rh* Ah*(1-Ah/Ahmax)  - dah * Ah/(1+alpha*Ah) * N ;
 dC5a_dt = Kc * ( Kca * (As+Ah) + Kch * H) /((1 + (Kca * (As+Ah) + Kch * H)))- (Kcn*N+Kcm*M)*C5a  -  muc5a*C5a;
 
 % Neutrophilsig
-dN_dt = Kn * (Knn * C5a * N + Kna * A + Knd * D)  / ( 1 + (Knn * C5a * N + Kna * A + Knd * D)  )  - mun * N;
+dN_dt = Kn * (Knn * C5a + Kna * A + Knd * D)  / ( 1 + (Knn * C5a + Kna * A + Knd * D)  )  - mun * N;
 
 % Macrophages
 dM_dt = Km * (Kmm * C5a * M + Kma * A + Kmd * D)  / ( 1 + (Kmm * C5a * M + Kma * A + Kmd * D)  ) - mum  * M;
